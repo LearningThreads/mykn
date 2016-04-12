@@ -1,0 +1,15 @@
+{
+  "name": "MYKN",
+  "version": "1.0",
+  "description": "My Knowledge Network",
+  "permissions": [
+    "bookmarks"
+  ],
+  "browser_action": {
+      "default_title": "MYKN",
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+  },
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
+}
