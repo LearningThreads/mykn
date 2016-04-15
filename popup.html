@@ -1,10 +1,42 @@
+<!DOCTYPE html>
+
+<!--
+This page is shown when the extension button is clicked, because the
+"browser_action" field in manifest.json contains the "default_popup" key with
+value "popup.html".
+
+It has been modified to be an AngularJS app.
+
+JavaScript and HTML must be in separate files: see our Content Security
+Policy documentation[1] for details and explanation.
+ [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+-->
+
 <html>
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="popup.js"></script>
+
+  <title>My Knowledge Network</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+  <link rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.css" media="screen">
+  <link rel="stylesheet" href="css/font-awesome.min.css" media="screen">
+  <link rel="stylesheet" href="css/mykn.css" media="screen">
+
+  <!-- JavaScript -->
+  <script src="lib/jquery-1.10.2.min.js"></script>
+  <script src="lib/jquery-ui-1.11.4/jquery-ui.js"></script>
+  <script src="js/popup.js"></script>
+
 </head>
 <body style="width: 400px">
-<div>Search Bookmarks: <input id="search"></div>
+
+<div>
+  <input id="search" type="text" placeholder="Search Bookmarks" />
+  <i class="fa fa-search input-icon"></i>
+</div>
 <div id="bookmarks"></div>
 <div id="editdialog"></div>
 <div id="deletedialog"></div>
