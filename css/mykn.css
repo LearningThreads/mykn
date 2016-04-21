@@ -13,9 +13,21 @@ ul ul {
 .input-icon {
   position: relative;
   z-index: 1;
-  left: -25px;
+  left: -35px;
   top: 1px;
   color: #7B7B7B;
   cursor: pointer;
   width: 0;
+}
+
+#search {
+  width: 250px;
+  padding-left: 10px;
+  margin: 10px 10px 10px 0;
+}
+
+.tinytext {
+  font-size: 0.7em;
+  text-align: right;
+  padding-right: 5px;
 }

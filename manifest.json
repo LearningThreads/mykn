@@ -1,13 +1,19 @@
 {
   "name": "MYKN",
-  "version": "1.0",
+  "version": "0.0.1",
   "description": "My Knowledge Network",
   "permissions": [
-    "bookmarks"
+    "bookmarks",
+    "history",
+    "tabs",
+    "storage"
   ],
+  "icons": {
+    "48": "img/logo/48x48.png"
+  },
   "browser_action": {
       "default_title": "MYKN",
-      "default_icon": "icon.png",
+      "default_icon": "img/logo/48x48.png",
       "default_popup": "popup.html"
   },
   "manifest_version": 2,

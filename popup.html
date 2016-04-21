@@ -12,7 +12,7 @@ Policy documentation[1] for details and explanation.
  [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
 -->
 
-<html>
+<html ng-app=popup ng-csp>
 <head>
 
   <title>My Knowledge Network</title>
@@ -20,26 +20,46 @@ Policy documentation[1] for details and explanation.
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-  <link rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.css" media="screen">
-  <link rel="stylesheet" href="css/font-awesome.min.css" media="screen">
-  <link rel="stylesheet" href="css/mykn.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">
 
   <!-- JavaScript -->
   <script src="lib/jquery-1.10.2.min.js"></script>
   <script src="lib/jquery-ui-1.11.4/jquery-ui.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
   <script src="js/popup.js"></script>
 
 </head>
+
 <body style="width: 400px">
 
-<div>
-  <input id="search" type="text" placeholder="Search Bookmarks" />
-  <i class="fa fa-search input-icon"></i>
+<div ng-controller="MainController">
+  <p class="tinytext right-close">Brought to you by <a href="http://www.learningthreads.co" tabindex="-1">{{companyName}}</a></p>
+  <div class="container">
+    <h4>{{title}}</h4>
+    <!--<button class="btn btn-info btn-sm" ng-click="showPlans()">Show Plan Options</button>-->
+  </div>
+
+  <div class="text-center">
+    <input id="search" style="width:90%;" type="text" placeholder="Search Bookmarks" tabindex="1"/>
+    <i class="fa fa-search input-icon"></i>
+  </div>
+  <p>Test: {{currentTabURL}}</p>
+
+  <div class="container">
+    <div id="bookmarks"></div>
+    <div id="editdialog"></div>
+    <div id="deletedialog"></div>
+    <div id="adddialog"></div>
+  </div>
 </div>
-<div id="bookmarks"></div>
-<div id="editdialog"></div>
-<div id="deletedialog"></div>
-<div id="adddialog"></div>
+
+<script src="app/app.js"></script>
+<script src="app/services/storage.js"></script>
+<script src="app/controllers/controllers.js"></script>
 </body>
+
 </html>
