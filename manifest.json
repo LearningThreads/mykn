@@ -2,11 +2,14 @@
   "name": "MYKN",
   "version": "0.0.1",
   "description": "My Knowledge Network",
+  "author":"Learning Threads Corporation",
   "permissions": [
-    "bookmarks",
-    "history",
+    //"bookmarks",
+    //"history",
+    "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "chrome://favicon/"
   ],
   "icons": {
     "48": "img/logo/48x48.png"

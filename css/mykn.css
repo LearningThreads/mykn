@@ -20,14 +20,66 @@ ul ul {
   width: 0;
 }
 
+.btn-nextTo {
+  display: inline;
+  position: relative;
+  left: 20px;
+  top: 0;
+  cursor: pointer;
+}
+
 #search {
   width: 250px;
   padding-left: 10px;
   margin: 10px 10px 10px 0;
 }
 
-.tinytext {
+.tinytext-right {
   font-size: 0.7em;
   text-align: right;
-  padding-right: 5px;
+  padding: 0 5px 0 0;
+  margin: 0;
+}
+
+.label {
+  -webkit-transition: all 150ms;
+  color: black;
+  display: block;
+  -webkit-padding-start: 20px;
+  background: 0 50% no-repeat;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  text-align: left;
+  /*background-image: url("../img/logo/48x48.png"); !* @todo this doesn't work due to permissions but there's a workaround to be found somewhere *!*/
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.icon-action {
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.section-header {
+  margin: 0;
+}
+
+.a-stitch {
+  cursor: pointer;
+}
+
+/* --- Styling for drag and drop of stitches into threads --- */
+.thread-row.drag-on, .drag-on {
+
+  /* @todo Same look as Google bookmarks, consider changing */
+  background-color: hsla(214, 91%, 85%, 0.5);
+  border: 1px solid hsl(214, 91%, 85%);
+  border-radius: 3px;
+  box-sizing: border-box;
+
 }

@@ -21,45 +21,74 @@ Policy documentation[1] for details and explanation.
 
   <!-- Stylesheets -->
   <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen"> <!-- @todo: does this have a minified version -->
+  <link type="text/css" rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.min.css" media="screen">
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo set up build runner to create a minified version -->
 
   <!-- JavaScript -->
   <script src="lib/jquery-1.10.2.min.js"></script>
-  <script src="lib/jquery-ui-1.11.4/jquery-ui.js"></script>
+  <script src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
   <script src="lib/angular/angular.min.js"></script>
-  <script src="js/popup.js"></script>
+  <script src="lib/taffy/taffy.js"></script>
+  <!--<script src="lib/interact/v1.2.6/interact.min.js"></script> &lt;!&ndash; interactjs.io &ndash;&gt;-->
 
 </head>
+
+<base target="_blank" />
 
 <body style="width: 400px">
 
 <div ng-controller="MainController">
-  <p class="tinytext right-close">Brought to you by <a href="http://www.learningthreads.co" tabindex="-1">{{companyName}}</a></p>
-  <div class="container">
-    <h4>{{title}}</h4>
-    <!--<button class="btn btn-info btn-sm" ng-click="showPlans()">Show Plan Options</button>-->
-  </div>
+  <p class="tinytext-right">With love from <a href="http://www.learningthreads.co" tabindex="-1">{{companyShortName}}</a> #keeplearning </p>
 
   <div class="text-center">
-    <input id="search" style="width:90%;" type="text" placeholder="Search Bookmarks" tabindex="1"/>
+    <input id="search" style="width:90%;" type="text" placeholder="Search My Knowledge Network" tabindex="1"/>
     <i class="fa fa-search input-icon"></i>
   </div>
-  <p>Test: {{currentTabURL}}</p>
+
+  <hr>
 
   <div class="container">
-    <div id="bookmarks"></div>
-    <div id="editdialog"></div>
-    <div id="deletedialog"></div>
-    <div id="adddialog"></div>
+    <p class="section-header">Threads
+      <a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>
+    </p>
+    <div id="threads" ng-if="threadsExist">
+      <div class="label"
+           ng-repeat="thread in getThreads() track by $index"
+           dropzone="copy">{{thread.title}}
+      </div>
+    </div>
   </div>
+
+  <hr>
+
+  <div class="container">
+    <p class="section-header">Stitches
+      <a class="icon-action" ng-click="addStitch()"><i class="fa fa-plus-circle"></i> add stitch</a>
+    </p>
+    <div id="stitches" ng-if="stitchesExist" >
+      <div class="label draggable"
+           style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
+           ng-class="'stitch-' + stitch.id"
+           ng-repeat="stitch in getStitches() track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">{{stitch.title}}</a>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="text-right">
+    <button style="margin:0 5px 5px 0;" class="btn btn-danger btn-xs" ng-click="clearAll()">CLEAR ALL</button>
+  </div>
+
 </div>
 
+<!-- The front-end angular application -->
 <script src="app/app.js"></script>
 <script src="app/services/storage.js"></script>
 <script src="app/controllers/controllers.js"></script>
+
 </body>
 
 </html>
