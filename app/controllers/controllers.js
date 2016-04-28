@@ -92,7 +92,10 @@ angular.module('popup')
 
       // Clears all of the local stored data
       $scope.clearAll = function() {
+        // Build a clean, empty db to start from
         $scope.db = build_ltdb();
+
+        // Save it to start the local storage clean as well
         chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
           $scope.stitchesExist = false;
         });
