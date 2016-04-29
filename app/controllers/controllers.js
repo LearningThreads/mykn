@@ -7,6 +7,8 @@ angular.module('popup')
       $scope.title = "MYKN - My Knowledge Network";
       $scope.companyName = "Learning Threads Corporation";
       $scope.companyShortName = "Learning Threads";
+      $scope.currentThread = undefined;
+      $scope.currentStitches = [];
 
       // Set the current tab so we know what to add if a stitch is added
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -27,28 +29,90 @@ angular.module('popup')
             $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
             $scope.threadsExist = $scope.db.graphs().first() !== undefined;
           }
+          $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
+          $scope.setCurrentStitches();
         })
       });
 
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
-        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
+        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
+          chrome.storage.local.get("ltdb", function(obj) {console.log(obj.ltdb);});
+          $scope.$apply(function() {
+            $scope.setCurrentStitches();
+          });
+        });
       };
 
-      // Add a stitch to the database
-      $scope.addStitch = function() {
-        $scope.db.nodes.insert({
-          title:$scope.currentTab.title,
-          url:$scope.currentTab.url,
-          favIconUrl:$scope.currentTab.favIconUrl
-        });
+      // Add a stitch to the desired thread (master thread if not defined)
+      $scope.addStitch = function addStitch(threadId) {
+
+        var stitchId;
+
+        // Look in the database to see if this is a unique stitch
+        var dupStitch = $scope.db.nodes({url:$scope.currentTab.url}).first();
+
+        if (!dupStitch) {
+          // Insert the stitch
+          stitchId = $scope.db.nodes.insert({
+            title: $scope.currentTab.title,
+            url: $scope.currentTab.url,
+            favIconUrl: $scope.currentTab.favIconUrl
+          }).first().___id;
+        } else {
+          stitchId = dupStitch.___id;
+        }
+
+        // Always add the stitch to the Master Thread
+        var stitchIds = $scope.db.graphs({title:"Master Thread"}).first().nodes;
+        if (stitchIds.indexOf(stitchId) == -1) {
+          stitchIds.push(stitchId);
+          $scope.db.graphs({name:"Master Thread"}).update({nodes:stitchIds});
+        }
+
+        // If threadId defined, add the stitchId to the right thread
+        if (threadId !== undefined) {
+          console.log('Trying to add a stitch to the graph');
+          console.log('The stitch id is ' + stitchId);
+          stitchIds = $scope.db.graphs(threadId).first().nodes;
+          console.log('The stitchIds are: ')
+          console.log(stitchIds);
+          if (stitchIds.indexOf(stitchId) == -1) {
+            stitchIds.push(stitchId);
+            $scope.db.graphs(threadId).update({nodes:stitchIds});
+          }
+          console.log('The graph is now:');
+          console.log($scope.db.graphs(threadId).get());
+        }
         $scope.stitchesExist = true;
         saveDB();
       };
 
+      $scope.setCurrentStitches = function setCurrentStitches() {
+        $scope.currentStitches = $scope.getStitches();
+      };
+
       // Get an array of stitches
       $scope.getStitches = function getStitches() {
-        return $scope.db.nodes().get();
+        var threadId;
+        if (!($scope.currentThread)) {
+          console.log('There is no current thread.');
+          threadId = undefined;
+        } else if ($scope.currentThread.___id === undefined) {
+          console.log('The current thread id is underfined');
+          threadId = undefined;
+        } else {
+          threadId = $scope.currentThread.___id;
+        }
+        if (threadId === undefined) {
+          return $scope.db.nodes().get();
+        } else {
+          var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes
+          var nodeArr = $scope.db.nodes(nodeIds).get();
+          console.log(nodeIds);
+          if (nodeIds.indexOf(undefined) >= 0) throw new Error('Whoops!');
+          return nodeArr;
+        }
       };
 
       // Get the stitch from the database
@@ -68,6 +132,7 @@ angular.module('popup')
 
       // Get an array of threads from the database
       $scope.getThreads = function getThreads() {
+        if ($scope.db === undefined) return [];
         return $scope.db.graphs().get();
       };
 

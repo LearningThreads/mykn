@@ -50,28 +50,40 @@ Policy documentation[1] for details and explanation.
   <hr>
 
   <div class="container">
-    <p class="section-header">Threads
-      <a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>
-    </p>
-    <div id="threads" ng-if="threadsExist">
-      <div class="label"
-           ng-repeat="thread in getThreads() track by $index"
-           dropzone="copy">{{thread.title}} {{thread.___id}}
-      </div>
-    </div>
+    <!--<p class="section-header">Threads-->
+      <!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
+    <!--</p>-->
+
+    <!--<div id="threads">-->
+      <!--<div class="label"-->
+           <!--ng-repeat="thread in getThreads() track by $index"-->
+           <!--dropzone="copy"><a ng-click="showStitches(thread.___id)">{{thread.title}}</a> {{thread.___id}}-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <form name="myForm">
+      <label for="threadSelect"> Thread: </label>
+      <select name="threadSelect"
+              id="threadSelect"
+              ng-options="thread.title for thread in getThreads() track by thread.___id"
+              ng-model="currentThread"
+              ng-change="setCurrentStitches()">
+      </select><a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>
+    </form>
+
   </div>
 
   <hr>
 
   <div class="container">
     <p class="section-header">Stitches
-      <a class="icon-action" ng-click="addStitch()"><i class="fa fa-plus-circle"></i> add stitch</a>
+      <a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>
     </p>
     <div id="stitches" ng-if="stitchesExist" >
       <div class="label draggable"
            style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
            ng-class="'stitch-' + stitch.id"
-           ng-repeat="stitch in getStitches() track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">{{stitch.title}} {{stitch.___id}}</a>
+           ng-repeat="stitch in currentStitches track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">{{stitch.title}} {{stitch.___id}}</a>
       </div>
     </div>
   </div>
