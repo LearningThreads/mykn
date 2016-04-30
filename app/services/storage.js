@@ -176,7 +176,7 @@ angular.module('popup', [])
     };
 
     var getGraphData = function getGraphData(graphs) {
-      gs = graphs({title:{'!is':'MasterThread'}}).get();
+      gs = graphs({title:{'!is':'Master Thread'}}).get();
       console.log('Prepping the data to save.');
       console.log('The graphs are currently:');
       console.log(gs);

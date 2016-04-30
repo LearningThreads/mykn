@@ -4,11 +4,14 @@ angular.module('popup')
     'build_ltdb',
     'prepSave_ltdb',
     function($scope,build_ltdb,prepSave_ltdb) {
+
+      // Variables defined on this scope
       $scope.title = "MYKN - My Knowledge Network";
       $scope.companyName = "Learning Threads Corporation";
       $scope.companyShortName = "Learning Threads";
       $scope.currentThread = undefined;
       $scope.currentStitches = [];
+      $scope.currentTab = {};
 
       // Set the current tab so we know what to add if a stitch is added
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -17,18 +20,15 @@ angular.module('popup')
         });
       });
 
-      // Get the database, which is maintained purely client-side
+      // Get the database, which is maintained purely client-side. Right now, because
+      // we're just using a popup, the database is re-built whenever the popup is
+      // loaded. This is terribly innefficient, but should work for us for initial
+      // small-scale testing.
       chrome.storage.local.get("ltdb", function(obj) {
         $scope.$apply(function() {
-          if (obj.ltdb === undefined) {
-            $scope.db = build_ltdb();
-            $scope.stitchesExist = false;
-            $scope.threadsExist = false;
-          } else {
-            $scope.db = build_ltdb(obj.ltdb);
-            $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
-            $scope.threadsExist = $scope.db.graphs().first() !== undefined;
-          }
+          $scope.db = build_ltdb(obj.ltdb);
+          $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
+          $scope.threadsExist = $scope.db.graphs().first() !== undefined;
           $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
           $scope.setCurrentStitches();
         })
@@ -36,12 +36,7 @@ angular.module('popup')
 
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
-        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
-          chrome.storage.local.get("ltdb", function(obj) {console.log(obj.ltdb);});
-          $scope.$apply(function() {
-            $scope.setCurrentStitches();
-          });
-        });
+        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
       };
 
       // Add a stitch to the desired thread (master thread if not defined)
@@ -75,7 +70,7 @@ angular.module('popup')
           console.log('Trying to add a stitch to the graph');
           console.log('The stitch id is ' + stitchId);
           stitchIds = $scope.db.graphs(threadId).first().nodes;
-          console.log('The stitchIds are: ')
+          console.log('The stitchIds are: ');
           console.log(stitchIds);
           if (stitchIds.indexOf(stitchId) == -1) {
             stitchIds.push(stitchId);
@@ -84,22 +79,28 @@ angular.module('popup')
           console.log('The graph is now:');
           console.log($scope.db.graphs(threadId).get());
         }
-        $scope.stitchesExist = true;
+        $scope.setCurrentStitches();
+
+        // Save the database whenever a stitch is added to the "popup copy"
+        // This could probably be implemented a lot differently (i.e. better)
         saveDB();
       };
 
+      // Define an array of stitches for the viewer
       $scope.setCurrentStitches = function setCurrentStitches() {
         $scope.currentStitches = $scope.getStitches();
+        $scope.stitchesExist = $scope.currentStitches.length > 0;
       };
 
-      // Get an array of stitches
+      // Get an array of stitches based on whichever thread is active.
+      // If no thread is active, then just show all of the stitches
       $scope.getStitches = function getStitches() {
         var threadId;
         if (!($scope.currentThread)) {
           console.log('There is no current thread.');
           threadId = undefined;
         } else if ($scope.currentThread.___id === undefined) {
-          console.log('The current thread id is underfined');
+          console.log('The current thread id is undefined');
           threadId = undefined;
         } else {
           threadId = $scope.currentThread.___id;
@@ -107,7 +108,7 @@ angular.module('popup')
         if (threadId === undefined) {
           return $scope.db.nodes().get();
         } else {
-          var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes
+          var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes;
           var nodeArr = $scope.db.nodes(nodeIds).get();
           console.log(nodeIds);
           if (nodeIds.indexOf(undefined) >= 0) throw new Error('Whoops!');
@@ -163,6 +164,9 @@ angular.module('popup')
         // Save it to start the local storage clean as well
         chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
           $scope.stitchesExist = false;
+          $scope.$apply(function() {
+            $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
+          });
         });
       };
 
