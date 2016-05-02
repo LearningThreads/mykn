@@ -96,7 +96,10 @@ angular.module('popup', [])
         edges: edges.edges().select('___id')
       });
 
-      graphs.insert(graphsData);
+      if (typeof graphsData === 'string') {
+        console.log('Hey! I am about to parse!');
+        graphs.insert(JSON.parse(graphsData));
+      }
 
       console.log('The inserted graph data is:');
       console.log(graphs().get());
@@ -181,7 +184,7 @@ angular.module('popup', [])
       console.log('The graphs are currently:');
       console.log(gs);
       // Remove the master graph from the array that gets stored.
-      return graphs({'title':{'!is':'Master Thread'}}).get();
+      return JSON.stringify(graphs({'title':{'!is':'Master Thread'}}).get());
     };
 
     return function(db) {
