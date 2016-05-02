@@ -70,10 +70,10 @@ angular.module('popup', [])
     // Create Graph Collection
     var createGraphCollection = function createGraphCollection(graphsData, nodes, edges) {
 
-      console.log('The graph data being loaded is:');
-      console.log(graphsData);
-      console.log('The node map is:');
-      console.log(nodes.map);
+      //console.log('The graph data being loaded is:');
+      //console.log(graphsData);
+      //console.log('The node map is:');
+      //console.log(nodes.map);
 
       // Create this collection with TAFFY
       var graphs = TAFFY();
@@ -97,12 +97,12 @@ angular.module('popup', [])
       });
 
       if (typeof graphsData === 'string') {
-        console.log('Hey! I am about to parse!');
+        //console.log('Hey! I am about to parse!');
         graphs.insert(JSON.parse(graphsData));
       }
 
-      console.log('The inserted graph data is:');
-      console.log(graphs().get());
+      //console.log('The inserted graph data is:');
+      //console.log(graphs().get());
 
       // Loop over each graph and fix the mapping of nodes and edges
       graphs().each(function (g,gIdx) {
@@ -124,8 +124,8 @@ angular.module('popup', [])
         graphs(g.___id).update({edges:edgeIds});
       });
 
-      console.log('After mapping, the graph data is:');
-      console.log(graphs().get());
+      //console.log('After mapping, the graph data is:');
+      //console.log(graphs().get());
 
       var graph_id_map = {};
       var new_graphs = graphs().get();
@@ -151,8 +151,8 @@ angular.module('popup', [])
         }
       }
 
-      console.log('The db being loaded is:');
-      console.log(db);
+      //console.log('The db being loaded is:');
+      //console.log(db);
 
       var nodes = createNodeCollection(db.nodes);
       var edges = createEdgeCollection(db.edges, nodes);
@@ -180,9 +180,9 @@ angular.module('popup', [])
 
     var getGraphData = function getGraphData(graphs) {
       gs = graphs({title:{'!is':'Master Thread'}}).get();
-      console.log('Prepping the data to save.');
-      console.log('The graphs are currently:');
-      console.log(gs);
+      //console.log('Prepping the data to save.');
+      //console.log('The graphs are currently:');
+      //console.log(gs);
       // Remove the master graph from the array that gets stored.
       return JSON.stringify(graphs({'title':{'!is':'Master Thread'}}).get());
     };

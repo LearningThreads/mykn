@@ -67,17 +67,17 @@ angular.module('popup')
 
         // If threadId defined, add the stitchId to the right thread
         if (threadId !== undefined) {
-          console.log('Trying to add a stitch to the graph');
-          console.log('The stitch id is ' + stitchId);
+          //console.log('Trying to add a stitch to the graph');
+          //console.log('The stitch id is ' + stitchId);
           stitchIds = $scope.db.graphs(threadId).first().nodes;
-          console.log('The stitchIds are: ');
-          console.log(stitchIds);
+          //console.log('The stitchIds are: ');
+          //console.log(stitchIds);
           if (stitchIds.indexOf(stitchId) == -1) {
             stitchIds.push(stitchId);
             $scope.db.graphs(threadId).update({nodes:stitchIds});
           }
-          console.log('The graph is now:');
-          console.log($scope.db.graphs(threadId).get());
+          //console.log('The graph is now:');
+          //console.log($scope.db.graphs(threadId).get());
         }
         $scope.setCurrentStitches();
 
@@ -97,10 +97,10 @@ angular.module('popup')
       $scope.getStitches = function getStitches() {
         var threadId;
         if (!($scope.currentThread)) {
-          console.log('There is no current thread.');
+          //console.log('There is no current thread.');
           threadId = undefined;
         } else if ($scope.currentThread.___id === undefined) {
-          console.log('The current thread id is undefined');
+          //console.log('The current thread id is undefined');
           threadId = undefined;
         } else {
           threadId = $scope.currentThread.___id;
@@ -110,7 +110,7 @@ angular.module('popup')
         } else {
           var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes;
           var nodeArr = $scope.db.nodes(nodeIds).get();
-          console.log(nodeIds);
+          //console.log(nodeIds);
           if (nodeIds.indexOf(undefined) >= 0) throw new Error('Whoops!');
           return nodeArr;
         }
