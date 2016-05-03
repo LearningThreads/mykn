@@ -12,6 +12,12 @@ angular.module('popup', [])
     // Create Node Collection
     var createNodeCollection = function createNodeCollection(nodesData) {
 
+      // Get the orignal node IDs for the node ID mapping
+      var origIds = [];
+      for (var o=0; o<nodesData.length; o++) {
+        origIds.push(nodesData[o].___id);
+      }
+
       // Create the colleciton with TAFFY
       var nodes = TAFFY(nodesData);
       nodes.collection_name = "stitches";
@@ -27,11 +33,17 @@ angular.module('popup', [])
         tags: []
       };
 
-      var node_id_map={};
+      // Get the new node IDs for the node ID mapping
+      var newIds = [];
       var new_nodes = nodes().get();
-      for (var i=0; i<nodesData.length; i++) {
-        node_id_map[nodesData[i].___id] = new_nodes[i].___id;
+      for (var i=0; i<new_nodes.length; i++) {
+        newIds[i] = new_nodes[i].___id;
       }
+
+      node_id_map = {
+        origIds:origIds,
+        newIds:newIds
+      };
 
       return {
         nodes: nodes,
@@ -70,11 +82,6 @@ angular.module('popup', [])
     // Create Graph Collection
     var createGraphCollection = function createGraphCollection(graphsData, nodes, edges) {
 
-      //console.log('The graph data being loaded is:');
-      //console.log(graphsData);
-      //console.log('The node map is:');
-      //console.log(nodes.map);
-
       // Create this collection with TAFFY
       var graphs = TAFFY();
       graphs.collection_name = "threads";
@@ -96,13 +103,13 @@ angular.module('popup', [])
         edges: edges.edges().select('___id')
       });
 
-      if (typeof graphsData === 'string') {
-        //console.log('Hey! I am about to parse!');
-        graphs.insert(JSON.parse(graphsData));
-      }
+      var graphsObj = JSON.parse(graphsData);
 
-      //console.log('The inserted graph data is:');
-      //console.log(graphs().get());
+      if (typeof graphsData === 'string') {
+        for (var k=0; k<graphsObj.length; k++) {
+          graphs.insert(graphsObj[k]);
+        }
+      }
 
       // Loop over each graph and fix the mapping of nodes and edges
       graphs().each(function (g,gIdx) {
@@ -112,20 +119,19 @@ angular.module('popup', [])
         // Map node IDs
         var nodeIds = g.nodes;
         for (var s=0; s<nodeIds.length; s++) {
-          nodeIds[s] = nodes.map[nodeIds[s]];
+          var newId = nodes.map.newIds[nodes.map.origIds.indexOf(nodeIds[s])];
+          if (newId === undefined) throw new Error('Your database has been corrupted.');
+          nodeIds[s] = newId;
         }
         graphs(g.___id).update({nodes:nodeIds});
 
-        // Map edge IDs
-        var edgeIds = g.edges;
-        for (var y=0; y< edgeIds.length; y++) {
-          edgeIds[y] = edges.map[edgeIds[y]];
-        }
-        graphs(g.___id).update({edges:edgeIds});
+        //// Map edge IDs
+        //var edgeIds = g.edges;
+        //for (var y=0; y< edgeIds.length; y++) {
+        //  edgeIds[y] = edges.map[edgeIds[y]];
+        //}
+        //graphs(g.___id).update({edges:edgeIds});
       });
-
-      //console.log('After mapping, the graph data is:');
-      //console.log(graphs().get());
 
       var graph_id_map = {};
       var new_graphs = graphs().get();
@@ -150,9 +156,6 @@ angular.module('popup', [])
           graphs: []
         }
       }
-
-      //console.log('The db being loaded is:');
-      //console.log(db);
 
       var nodes = createNodeCollection(db.nodes);
       var edges = createEdgeCollection(db.edges, nodes);
@@ -180,9 +183,6 @@ angular.module('popup', [])
 
     var getGraphData = function getGraphData(graphs) {
       gs = graphs({title:{'!is':'Master Thread'}}).get();
-      //console.log('Prepping the data to save.');
-      //console.log('The graphs are currently:');
-      //console.log(gs);
       // Remove the master graph from the array that gets stored.
       return JSON.stringify(graphs({'title':{'!is':'Master Thread'}}).get());
     };
