@@ -5,19 +5,15 @@ var man = require('./manifest.json');
 // ------------
 var gulp = require('gulp');
 
-var autoprefixer    = require('gulp-autoprefixer'),
-//browsersync     = require('browser-sync'),
-  cache           = require('gulp-cached'),
+var cache           = require('gulp-cached'),
   concat          = require('gulp-concat'),
   filter          = require('gulp-filter'),
+  htmlmin         = require('gulp-htmlmin'),
   imagemin        = require('gulp-imagemin'),
   jshint          = require('gulp-jshint'),
-  less            = require('gulp-less'),
   notify          = require('gulp-notify'),
   plumber         = require('gulp-plumber'),
   rename          = require('gulp-rename'),
-//sass            = require('gulp-sass'),
-  sourcemaps      = require('gulp-sourcemaps'),
   uglify          = require('gulp-uglify');
 
 // Configuration
@@ -76,9 +72,9 @@ gulp.task('app', function() {
     //.pipe(jshint.reporter('fail'))
     //.on('error', onError)
     //.pipe(concat('mykn_frontend.js'))
-    .pipe(rename({suffix: '.min'}))
+    //.pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest(dest + '/js'))
+    .pipe(gulp.dest(dest + '/app'))
     .pipe(notify({ message: 'App task complete' }));
 });
 
@@ -99,7 +95,7 @@ gulp.task('scripts', function() {
     //.pipe(concat('main.js'))
 
     // Minify
-    .pipe(rename({suffix: '.min'}))
+    //.pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest(dest + '/js'))
 
@@ -151,11 +147,12 @@ gulp.task('images', function() {
 // Library files
 gulp.task('library', function() {
   return gulp.src([
-      src+'/lib/angular/angular.min.js',
-      src+'/lib/angular/angular-csp.css',
-      src+'/lib/bootstrap/bootstrap.min.js',
-      src+'/lib/jquery/jquery-1.10.2.min.js',
-      src+'/lib/taffy/taffy.js'
+      src+'/lib/*/angular.min.js',   // @todo: Change these to pull from node_modules
+      src+'/lib/*/angular-csp.css',
+      src+'/lib/*/README.md',
+      src+'/lib/*/bootstrap.min.js',
+      src+'/lib/*/jquery-1.10.2.min.js',
+      src+'/lib/*/taffy.js'
     ])
 
     .pipe(cache())
@@ -166,12 +163,25 @@ gulp.task('library', function() {
 });
 
 // Top level files
+gulp.task('html', function() {
+  return gulp.src([
+    src+'*.html'
+  ])
+    .pipe(cache())
+    .pipe(htmlmin({
+      removeComments: true,
+      collapseWhitespace: true
+    }))
+    .pipe(gulp.dest(dest))
+    .pipe(notify({message: 'Top level task complete'}));
+});
+
+// Top level files
 gulp.task('top', function() {
   return gulp.src([
-    src+'*.html',
-    src+'manifest.json',
-    src+'LICENSE'
-  ])
+      src+'manifest.json',
+      src+'LICENSE'
+    ])
     .pipe(cache())
     .pipe(gulp.dest(dest))
     .pipe(notify({message: 'Top level task complete'}));
@@ -180,7 +190,7 @@ gulp.task('top', function() {
 
 // Default task
 // ------------
-gulp.task('default', ['styles', 'scripts', 'images', 'library', 'fonts', 'app', 'top']);
+gulp.task('default', ['styles', 'scripts', 'images', 'library', 'fonts', 'app', 'top', 'html']);
 
  // Development task
  // ----------------
@@ -188,5 +198,6 @@ gulp.task('dev', [], function() {
   gulp.watch(src + '/css/**/*.css', ['styles']);
   gulp.watch(src + '/js/**/*.js', ['scripts']);
   gulp.watch(src + '/img/**/*', ['images']);
-  gulp.watch(src + '*.html', ['top']);
+  gulp.watch(src + '*.html', ['html']);
+  gulp.watch(src + '*.*', ['top']);
 });
