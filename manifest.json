@@ -1,8 +1,8 @@
 {
-  "name": "MYKN",
+  "name": "My Knowledge Network",
   "short_name": "MYKN",
   "version": "0.0.1",
-  "description": "My Knowledge Network",
+  "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
     "activeTab",
