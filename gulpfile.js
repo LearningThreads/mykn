@@ -21,7 +21,7 @@ var cache           = require('gulp-cached'),
 
 // File paths
 var src     = './',
-  dest    = 'dist/' + man.name + '-' + man.version;
+  dest    = 'dist/' + man.short_name + '-' + man.version;
 
 // Error handling
 // --------------
