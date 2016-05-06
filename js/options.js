@@ -4,11 +4,11 @@ function clearAll() {
     edges:[],
     graphs:'[]'
   };
-  chrome.storage.local.set({"ltdb":db}, function() {
-    console.log('Cleared');
-    chrome.storage.local.get("ltdb", function(obj) {
-      console.log(obj);
-    })
+  chrome.storage.local.set({"ltdb":db,"currentThreadName": ""}, function() {
+    //console.log('Cleared');
+    //chrome.storage.local.get("ltdb", function(obj) {
+    //  console.log(obj);
+    //})
   });
 }
 

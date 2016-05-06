@@ -5,13 +5,20 @@ angular.module('popup')
     'prepSave_ltdb',
     function($scope,build_ltdb,prepSave_ltdb) {
 
+      // Local variables
+      var masterThreadName = "Master Thread";
+
       // Variables defined on this scope
       $scope.title = "MYKN - My Knowledge Network";
       $scope.companyName = "Learning Threads Corporation";
       $scope.companyShortName = "Learning Threads";
       $scope.currentThread = undefined;
+      $scope.currentThreadName = "";
       $scope.currentStitches = [];
       $scope.currentTab = {};
+      $scope.newThreadTitle = "";
+      $scope.newThreadDescription = "";
+      $scope.stitchesExist = false;
 
       // Set the current tab so we know what to add if a stitch is added
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -24,15 +31,45 @@ angular.module('popup')
       // we're just using a popup, the database is re-built whenever the popup is
       // loaded. This is terribly innefficient, but should work for us for initial
       // small-scale testing.
-      chrome.storage.local.get("ltdb", function(obj) {
+      //chrome.storage.local.get("currentThread", function(obj) {
+
+      //if (obj !== undefined) $scope.currentThread = obj.currentThread;
+      chrome.storage.local.get(["ltdb", "currentThreadName"], function(obj) {
         $scope.$apply(function() {
           $scope.db = build_ltdb(obj.ltdb);
-          $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
+          //$scope.stitchesExist = $scope.db.nodes().first() !== undefined;
           $scope.threadsExist = $scope.db.graphs().first() !== undefined;
-          $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
+          //if ($scope.currentThread === undefined) {
+          //  $scope.currentThread = $scope.db.graphs({'title': 'Master Thread'}).first();
+          //}
+          //  chrome.storage.local.get("currentThreadName", function(obj) {
+          var tempName = "";
+          if (obj.currentThreadName !== undefined) {
+            tempName = obj.currentThreadName;
+          }
+          if (tempName == "") {
+            tempName = masterThreadName;
+          }
+          $scope.currentThreadName = tempName;
+          $scope.currentThread = $scope.db.graphs({'title': tempName}).first();
+          console.log(tempName);
           $scope.setCurrentStitches();
-        })
+          //});
+          //chrome.storage.local.set({"currentThread":$scope.currentThread}, function() {});
+          //console.log($scope.currentThread);
+          //$scope.setCurrentStitches();
+        });
       });
+      //});
+      //chrome.storage.local.get("ltdb", function(obj) {
+      //  $scope.$apply(function() {
+      //    $scope.db = build_ltdb(obj.ltdb);
+      //    $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
+      //    $scope.threadsExist = $scope.db.graphs().first() !== undefined;
+      //    $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
+      //    $scope.setCurrentStitches();
+      //  })
+      //});
 
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
@@ -114,9 +151,25 @@ angular.module('popup')
 
       // Add a thread to the database
       $scope.addThread = function() {
+
+        var threadTitle = "A New Thread";
+        var threadDescription = "The default thread description for a new thread.";
+
+        if ($scope.newThreadTitle !== undefined) {
+          if ($scope.newThreadTitle !== "") {
+            threadTitle = $scope.newThreadTitle;
+          }
+        }
+
+        if ($scope.newThreadDescription !== undefined) {
+          if ($scope.newThreadDescription !== "") {
+            threadDescription = $scope.newThreadDescription;
+          }
+        }
+
         $scope.currentThread = $scope.db.graphs.insert({
-          title:"A New Thread",
-          description:"This is a new default thread"
+          title:threadTitle,
+          description:threadDescription
         }).first();
         $scope.setCurrentStitches();
         saveDB();
@@ -147,20 +200,6 @@ angular.module('popup')
         });
       };
 
-      // Clears all of the local stored data
-      $scope.clearAll = function() {
-        // Build a clean, empty db to start from
-        $scope.db = build_ltdb();
-
-        // Save it to start the local storage clean as well
-        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
-          $scope.stitchesExist = false;
-          $scope.$apply(function() {
-            $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
-          });
-        });
-      };
-
       $scope.loadTab = function(url) {
         chrome.tabs.create( {
           url: url
@@ -171,54 +210,15 @@ angular.module('popup')
         chrome.tabs.create({
           url: 'https://www.learningthreads.co'
         })
-      }
+      };
+
+      // Watch the currentThread value to save it to storage when it changes. This enables us to
+      // set the currentThread when the popup is re-opened.
+      $scope.$watch("currentThread", function() {
+        if ($scope.currentThread !== undefined) {
+          chrome.storage.local.set({"currentThreadName": $scope.currentThread.title}, function () {
+          });
+        }
+      });
     }
   ]);
-
-
-
-//// Function to set the next ID when a data item is added
-//setNextID = function setNextID() {
-//  chrome.storage.local.get("ID", function(obj) {
-//    if (obj.ID === undefined) {
-//      $scope.nextID = 1;
-//    } else {
-//      $scope.nextID = obj.ID + 1;
-//    }
-//    chrome.storage.local.set({"ID":$scope.nextID}, function(){});
-//    console.log($scope.nextID);
-//  });
-//};
-//setNextID();  // Call it once to have the next ID ready
-
-//chrome.storage.local.get("stitches", function(obj){
-//  $scope.$apply(function() {
-//    if (obj.stitches === undefined) {
-//      $scope.stitches = [];
-//      $scope.stitchesExist = false;
-//    } else {
-//      $scope.stitches = obj.stitches;
-//      $scope.stitchesExist = true;
-//    }
-//  });
-//});
-
-//chrome.storage.local.get("threads", function(obj){
-//  $scope.$apply(function() {
-//    if (obj.threads === undefined) {
-//      $scope.threads = [];
-//    } else {
-//      $scope.threads = obj.threads;
-//    }
-//  });
-//});
-
-//chrome.storage.local.get("yarns", function(obj){
-//  $scope.$apply(function() {
-//    if (obj.yarns === undefined) {
-//      $scope.yarns = [];
-//    } else {
-//      $scope.yarns = obj.yarns;
-//    }
-//  });
-//});

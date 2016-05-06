@@ -1,11 +1,5 @@
 angular.module('popup', [])
 
-  .service('Storage', ['$rootScope', function($rootScope) {
-
-    return {
-    };
-  }])
-
   // Service to (re-)build the database (depends on taffy.js functions being available)
   .service('build_ltdb', function() {
 
@@ -103,35 +97,37 @@ angular.module('popup', [])
         edges: edges.edges().select('___id')
       });
 
-      var graphsObj = JSON.parse(graphsData);
+      if (graphsData !== '') {
+        var graphsObj = JSON.parse(graphsData);
 
-      if (typeof graphsData === 'string') {
-        for (var k=0; k<graphsObj.length; k++) {
-          graphs.insert(graphsObj[k]);
+        if (typeof graphsData === 'string') {
+          for (var k = 0; k < graphsObj.length; k++) {
+            graphs.insert(graphsObj[k]);
+          }
         }
+
+        // Loop over each graph and fix the mapping of nodes and edges
+        graphs().each(function (g, gIdx) {
+
+          if (gIdx === 0) return; // skip the master thread
+
+          // Map node IDs
+          var nodeIds = g.nodes;
+          for (var s = 0; s < nodeIds.length; s++) {
+            var newId = nodes.map.newIds[nodes.map.origIds.indexOf(nodeIds[s])];
+            if (newId === undefined) throw new Error('Your database has been corrupted.');
+            nodeIds[s] = newId;
+          }
+          graphs(g.___id).update({nodes: nodeIds});
+
+          //// Map edge IDs
+          //var edgeIds = g.edges;
+          //for (var y=0; y< edgeIds.length; y++) {
+          //  edgeIds[y] = edges.map[edgeIds[y]];
+          //}
+          //graphs(g.___id).update({edges:edgeIds});
+        });
       }
-
-      // Loop over each graph and fix the mapping of nodes and edges
-      graphs().each(function (g,gIdx) {
-
-        if (gIdx===0) return; // skip the master thread
-
-        // Map node IDs
-        var nodeIds = g.nodes;
-        for (var s=0; s<nodeIds.length; s++) {
-          var newId = nodes.map.newIds[nodes.map.origIds.indexOf(nodeIds[s])];
-          if (newId === undefined) throw new Error('Your database has been corrupted.');
-          nodeIds[s] = newId;
-        }
-        graphs(g.___id).update({nodes:nodeIds});
-
-        //// Map edge IDs
-        //var edgeIds = g.edges;
-        //for (var y=0; y< edgeIds.length; y++) {
-        //  edgeIds[y] = edges.map[edgeIds[y]];
-        //}
-        //graphs(g.___id).update({edges:edgeIds});
-      });
 
       var graph_id_map = {};
       var new_graphs = graphs().get();
@@ -153,7 +149,7 @@ angular.module('popup', [])
         db = {
           nodes:[],
           edges: [],
-          graphs: []
+          graphs: ''  // this is set to a string because using stringify below (which may no longer be needed) @todo check it out
         }
       }
 
@@ -182,7 +178,7 @@ angular.module('popup', [])
     };
 
     var getGraphData = function getGraphData(graphs) {
-      gs = graphs({title:{'!is':'Master Thread'}}).get();
+      //gs = graphs({title:{'!is':'Master Thread'}}).get();
       // Remove the master graph from the array that gets stored.
       return JSON.stringify(graphs({'title':{'!is':'Master Thread'}}).get());
     };

@@ -21,64 +21,108 @@ Policy documentation[1] for details and explanation.
 
   <!-- Stylesheets -->
   <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen"> <!-- @todo: does this have a minified version -->
-  <link type="text/css" rel="stylesheet" href="lib/jquery-ui-1.11.4/jquery-ui.min.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen"> <!-- @todo: minify -->
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo set up build runner to create a minified version -->
+  <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo minify -->
 
   <!-- JavaScript -->
-  <script src="lib/jquery-1.10.2.min.js"></script>
-  <script src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+  <script src="lib/jquery/jquery-1.10.2.min.js"></script> <!-- needed for Bootstrap -->
+  <script src="lib/bootstrap/bootstrap.min.js"></script>
   <script src="lib/angular/angular.min.js"></script>
-  <script src="lib/taffy/taffy.js"></script>
-  <!--<script src="lib/interact/v1.2.6/interact.min.js"></script> &lt;!&ndash; interactjs.io &ndash;&gt;-->
+  <script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
 
 </head>
 
 <base target="_blank" />
 
-<body style="width: 400px">
+<body style="min-width: 400px; min-height: 200px;">
 
 <div ng-controller="MainController">
   <p class="tinytext-right">With love from <a href="http://www.learningthreads.co" tabindex="-1">{{companyShortName}}</a> #keeplearning </p>
 
   <!--<div class="text-center">-->
-    <!--<input id="search" style="width:90%;" type="text" placeholder="Search My Knowledge Network" tabindex="1"/>-->
-    <!--<i class="fa fa-search input-icon"></i>-->
+  <!--<input id="search" style="width:90%;" type="text" placeholder="Search My Knowledge Network" tabindex="1"/>-->
+  <!--<i class="fa fa-search input-icon"></i>-->
   <!--</div>-->
 
   <hr>
 
   <div class="container">
-    <!--<p class="section-header">Threads-->
-      <!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
-    <!--</p>-->
-
-    <!--<div id="threads">-->
-      <!--<div class="label"-->
-           <!--ng-repeat="thread in getThreads() track by $index"-->
-           <!--dropzone="copy"><a ng-click="showStitches(thread.___id)">{{thread.title}}</a> {{thread.___id}}-->
-      <!--</div>-->
-    <!--</div>-->
-
     <form name="myForm">
-      <label for="threadSelect"> Thread: </label>
+      <!-- button to add a new thread -->
+      <button id="newThreadButton"
+              class="btn btn-primary btn-xs"
+              data-toggle="modal"
+              data-target="#newThreadButtonModal">
+        <i class="fa fa-plus-circle"></i> New Thread
+      </button>
+
+      <!-- selector for current thread -->
+      <label for="threadSelect"></label>
       <select name="threadSelect"
               id="threadSelect"
               ng-options="thread.title for thread in getThreads() track by thread.___id"
               ng-model="currentThread"
               ng-change="setCurrentStitches()">
-      </select><a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>
-    </form>
+      </select><!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
 
+      <!-- button to add stitch to thread -->
+      <button class="btn btn-primary btn-xs"
+              ng-click="addStitch(currentThread.___id)">
+        <i class="fa fa-plus-circle"></i> Add Link
+      </button>
+
+    </form>
+  </div>
+
+  <!-- Modal element to specify the thread title -->
+  <div class="modal fade" id="newThreadButtonModal" tabindex="-1" role="dialog" aria-labelledby="newThreadButtonModelLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Start New Learning Thread</h4>
+        </div>
+        <div class="modal-body">
+          <form name="newThread" class="validate" target="_blank" novalidate>
+
+            <!-- A title for the new thread -->
+            <label for="threadName">Name:</label>
+            <input id="threadName"
+                   type="text"
+                   name="threadName"
+                   placeholder="New Thread"
+                   ng-model="newThreadTitle"><br>
+
+            <!-- A description for the new thread -->
+            <!--<label for="threadDescription">Description:</label><br>-->
+            <!--<input id="threadDescription"-->
+                   <!--type="text"-->
+                   <!--name="threadDescription"-->
+                   <!--placeholder="Add your description here."-->
+                   <!--ng-model="newThreadDescription"><br>-->
+
+            <!-- Add and cancel buttons -->
+            <button class="btn btn-sm btn-success"
+                    type="button"
+                    ng-click="addThread()"
+                    data-dismiss="modal"
+                    data-target="#newThreadButtonModal">Add</button>
+            <button class="btn btn-sm btn-danger"
+                    data-dismiss="modal"
+                    data-target="#newThreadButtonModal">Cancel</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <hr>
 
   <div class="container">
-    <p class="section-header">Stitches
-      <a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>
-    </p>
+    <!--<p class="section-header">Stitches-->
+      <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
+    <!--</p>-->
     <div id="stitches" ng-if="stitchesExist" >
       <div class="label draggable"
            style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
@@ -89,10 +133,6 @@ Policy documentation[1] for details and explanation.
   </div>
 
   <hr>
-
-  <!--<div class="text-right">-->
-    <!--<button style="margin:0 5px 5px 0;" class="btn btn-danger btn-xs" ng-click="clearAll()">CLEAR ALL</button>-->
-  <!--</div>-->
 
 </div>
 

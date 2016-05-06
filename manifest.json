@@ -4,8 +4,6 @@
   "description": "My Knowledge Network",
   "author":"Learning Threads Corporation",
   "permissions": [
-    //"bookmarks",
-    //"history",
     "activeTab",
     "tabs",
     "storage",
