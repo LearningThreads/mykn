@@ -6,9 +6,11 @@
   "author":"Learning Threads Corporation",
   "permissions": [
     "activeTab",
+    "downloads",
     "tabs",
     "storage",
-    "chrome://favicon/"
+    "chrome://favicon/",
+    "https://www.google-analytics.com/"
   ],
   "icons": {
     "16": "img/logo/16x16.png",
