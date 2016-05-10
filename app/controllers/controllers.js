@@ -52,7 +52,7 @@ angular.module('popup')
           }
           $scope.currentThreadName = tempName;
           $scope.currentThread = $scope.db.graphs({'title': tempName}).first();
-          console.log(tempName);
+          //console.log(tempName);
           $scope.setCurrentStitches();
           //});
           //chrome.storage.local.set({"currentThread":$scope.currentThread}, function() {});

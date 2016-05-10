@@ -151,6 +151,7 @@ gulp.task('library', function() {
       src+'/lib/*/angular-csp.css',
       src+'/lib/*/README.md',
       src+'/lib/*/bootstrap.min.js',
+      src+'/lib/*/google-analytics-bundle.js',
       src+'/lib/*/jquery-1.10.2.min.js',
       src+'/lib/*/taffy.js'
     ])
