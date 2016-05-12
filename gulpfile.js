@@ -201,4 +201,5 @@ gulp.task('dev', [], function() {
   gulp.watch(src + '/img/**/*', ['images']);
   gulp.watch(src + '*.html', ['html']);
   gulp.watch(src + '*.*', ['top']);
+  gulp.watch(src + '/app/**/*.js', ['app']);
 });

@@ -9,6 +9,7 @@ angular.module('popup')
       var masterThreadName = "Master Thread";
 
       // Variables defined on this scope
+      $scope.db = undefined;
       $scope.title = "MYKN - My Knowledge Network";
       $scope.companyName = "Learning Threads Corporation";
       $scope.companyShortName = "Learning Threads";
@@ -92,6 +93,33 @@ angular.module('popup')
         // Save the database whenever a stitch is added to the "popup copy"
         // This could probably be implemented a lot differently (i.e. better)
         saveDB();
+      };
+
+      // Remove a stitch from the current thread
+      // (right now it won't allow you to remove it from the master thread)
+      $scope.removeStitch = function removeStitch(threadId, stitchId) {
+
+        // get the thread
+        var thisThread = $scope.db.graphs(threadId).first();
+
+        // if master thread, just return without doing anything
+        // else, find the stitchId and remove it from the array
+        if (thisThread.title != masterThreadName) {
+          var stitches = thisThread.nodes;
+          var index = stitches.indexOf(stitchId);
+          if (index > -1) {
+            stitches.splice(index, 1);
+          }
+
+          // update the array of stitches, save the database and reset scope variables
+          $scope.db.graphs(threadId).update({nodes: stitches});
+
+          // @todo is there a way to watch for an update and trigger these actions?
+          saveDB();
+          $scope.currentThread = $scope.db.graphs(threadId).first();
+          $scope.setCurrentStitches();
+        }
+
       };
 
       // Define an array of stitches for the viewer

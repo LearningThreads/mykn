@@ -130,6 +130,7 @@ Policy documentation[1] for details and explanation.
            style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
            ng-class="'stitch-' + stitch.id"
            ng-repeat="stitch in currentStitches track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">{{stitch.title}}</a>
+        <a ng-click="removeStitch(currentThread.___id, stitch.___id)"><i class="fa fa-trash-o icon-action"></i></a>
       </div>
     </div>
   </div>
