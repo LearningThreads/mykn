@@ -31,18 +31,10 @@ angular.module('popup')
       // we're just using a popup, the database is re-built whenever the popup is
       // loaded. This is terribly innefficient, but should work for us for initial
       // small-scale testing.
-      //chrome.storage.local.get("currentThread", function(obj) {
-
-      //if (obj !== undefined) $scope.currentThread = obj.currentThread;
       chrome.storage.local.get(["ltdb", "currentThreadName"], function(obj) {
         $scope.$apply(function() {
           $scope.db = build_ltdb(obj.ltdb);
-          //$scope.stitchesExist = $scope.db.nodes().first() !== undefined;
           $scope.threadsExist = $scope.db.graphs().first() !== undefined;
-          //if ($scope.currentThread === undefined) {
-          //  $scope.currentThread = $scope.db.graphs({'title': 'Master Thread'}).first();
-          //}
-          //  chrome.storage.local.get("currentThreadName", function(obj) {
           var tempName = "";
           if (obj.currentThreadName !== undefined) {
             tempName = obj.currentThreadName;
@@ -52,24 +44,9 @@ angular.module('popup')
           }
           $scope.currentThreadName = tempName;
           $scope.currentThread = $scope.db.graphs({'title': tempName}).first();
-          //console.log(tempName);
           $scope.setCurrentStitches();
-          //});
-          //chrome.storage.local.set({"currentThread":$scope.currentThread}, function() {});
-          //console.log($scope.currentThread);
-          //$scope.setCurrentStitches();
         });
       });
-      //});
-      //chrome.storage.local.get("ltdb", function(obj) {
-      //  $scope.$apply(function() {
-      //    $scope.db = build_ltdb(obj.ltdb);
-      //    $scope.stitchesExist = $scope.db.nodes().first() !== undefined;
-      //    $scope.threadsExist = $scope.db.graphs().first() !== undefined;
-      //    $scope.currentThread = $scope.db.graphs({'title':'Master Thread'}).first();
-      //    $scope.setCurrentStitches();
-      //  })
-      //});
 
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
