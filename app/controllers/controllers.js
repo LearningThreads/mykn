@@ -8,6 +8,12 @@ angular.module('popup')
       // Local variables
       var masterThreadName = "Master Thread";
 
+      // --- Local helper functions --- //
+      function isEmpty(str) {
+        return (!str || 0 === str.length);
+      }
+
+
       // Variables defined on this scope
       $scope.db = undefined;
       $scope.title = "MYKN - My Knowledge Network";
@@ -20,6 +26,7 @@ angular.module('popup')
       $scope.newThreadTitle = "";
       $scope.newThreadDescription = "";
       $scope.stitchesExist = false;
+      $scope.getMasterThreadTitle = function() {return masterThreadName;};
 
       // Set the current tab so we know what to add if a stitch is added
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -54,6 +61,15 @@ angular.module('popup')
         chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
       };
 
+      var verifyFavIconUrl = function verifyFavIconUrl(favIconUrl) {
+        console.log(favIconUrl);
+        if (favIconUrl.includes('chrome://theme') || isEmpty(favIconUrl)) {
+          return '/img/logo/16x16.png';
+        } else {
+          return favIconUrl;
+        }
+      };
+
       // Add a stitch to the desired thread (master thread if not defined)
       $scope.addStitch = function addStitch(threadId) {
 
@@ -67,7 +83,7 @@ angular.module('popup')
           stitchId = $scope.db.nodes.insert({
             title: $scope.currentTab.title,
             url: $scope.currentTab.url,
-            favIconUrl: $scope.currentTab.favIconUrl
+            favIconUrl: verifyFavIconUrl($scope.currentTab.favIconUrl)
           }).first().___id;
         } else {
           stitchId = dupStitch.___id;
@@ -117,7 +133,28 @@ angular.module('popup')
           // @todo is there a way to watch for an update and trigger these actions?
           saveDB();
           $scope.currentThread = $scope.db.graphs(threadId).first();
+          $scope.currentThreadName = $scope.currentThread.title;
           $scope.setCurrentStitches();
+        }
+
+      };
+
+      // Delete a thread
+      $scope.removeThread = function removeThread(threadId) {
+
+        // get the thread
+        var thisThread = $scope.db.graphs(threadId).first();
+
+        // if master thread, just return without doing anything
+        if (thisThread.title != masterThreadName) {
+          $scope.db.graphs(threadId).remove();
+          saveDB();
+
+          // reset the current thread to the master thread
+          $scope.currentThread = $scope.db.graphs({title:masterThreadName}).first();
+          $scope.currentThreadName = $scope.currentThread.title;
+          $scope.setCurrentStitches();
+
         }
 
       };
@@ -144,6 +181,7 @@ angular.module('popup')
         } else {
           var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes;
           var nodeArr = $scope.db.nodes(nodeIds).get();
+          console.log(nodeArr);
           if (nodeIds.indexOf(undefined) >= 0) throw new Error('Whoops!');
           return nodeArr;
         }

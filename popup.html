@@ -25,14 +25,6 @@ Policy documentation[1] for details and explanation.
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
   <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo minify -->
 
-  <!-- JavaScript -->
-  <script src="lib/jquery/jquery-1.10.2.min.js"></script> <!-- needed for Bootstrap -->
-  <script src="lib/bootstrap/bootstrap.min.js"></script>
-  <script src="lib/angular/angular.min.js"></script>
-  <script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
-  <script src="lib/google-analytics/google-analytics-bundle.js"></script>
-  <script src="js/popup.js"></script>
-
 </head>
 
 <base target="_blank" />
@@ -54,9 +46,10 @@ Policy documentation[1] for details and explanation.
       <!-- button to add a new thread -->
       <button id="newThreadButton"
               class="btn btn-primary btn-xs"
+              tabindex="2"
               data-toggle="modal"
               data-target="#newThreadButtonModal">
-        <i class="fa fa-plus-circle"></i> New Thread
+        <i class="fa fa-plus-circle"></i> New
       </button>
 
       <!-- selector for current thread -->
@@ -68,10 +61,16 @@ Policy documentation[1] for details and explanation.
               ng-change="setCurrentStitches()">
       </select><!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
 
+      <a ng-if="currentThread.title!==getMasterThreadTitle()"
+         ng-click="removeThread(currentThread.___id)">
+        <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:10px;"></i>
+      </a>
+
       <!-- button to add stitch to thread -->
-      <button class="btn btn-primary btn-xs"
+      <button class="btn btn-primary btn-xs rightify"
+              tabindex="1"
               ng-click="addStitch(currentThread.___id)">
-        <i class="fa fa-plus-circle"></i> Add Link
+        <i class="fa fa-bookmark"></i> Add
       </button>
 
     </form>
@@ -98,10 +97,10 @@ Policy documentation[1] for details and explanation.
             <!-- A description for the new thread -->
             <!--<label for="threadDescription">Description:</label><br>-->
             <!--<input id="threadDescription"-->
-                   <!--type="text"-->
-                   <!--name="threadDescription"-->
-                   <!--placeholder="Add your description here."-->
-                   <!--ng-model="newThreadDescription"><br>-->
+            <!--type="text"-->
+            <!--name="threadDescription"-->
+            <!--placeholder="Add your description here."-->
+            <!--ng-model="newThreadDescription"><br>-->
 
             <!-- Add and cancel buttons -->
             <button class="btn btn-sm btn-success"
@@ -121,16 +120,20 @@ Policy documentation[1] for details and explanation.
 
   <hr>
 
-  <div class="container">
+  <div>
     <!--<p class="section-header">Stitches-->
-      <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
+    <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
     <!--</p>-->
     <div id="stitches" ng-if="stitchesExist" >
-      <div class="label draggable"
+      <div class="label stitch-row"
            style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
            ng-class="'stitch-' + stitch.id"
-           ng-repeat="stitch in currentStitches track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">{{stitch.title}}</a>
-        <a ng-click="removeStitch(currentThread.___id, stitch.___id)"><i class="fa fa-trash-o icon-action"></i></a>
+           ng-repeat="stitch in currentStitches track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">
+        <span class="stitch-title">{{stitch.title}}</span></a>
+        <a ng-if="currentThread.title!==getMasterThreadTitle()"
+           ng-click="removeStitch(currentThread.___id, stitch.___id)">
+            <i class="fa fa-trash-o icon-action rightify" style="background-color:white;padding-left:0;"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -138,10 +141,18 @@ Policy documentation[1] for details and explanation.
   <hr>
 
   <label class="permissionCheck">
-    Send anonymous tracking data. <input type="checkbox" id="analyticsPermission" />
+    Send anonymous tracking data. <a href="http://www.learningthreads.co/?page_id=1678">Learn why this is important. </a> <input type="checkbox" id="analyticsPermission" />
   </label>
 
 </div>
+
+<!-- Scripts: placed at end for load optimization-->
+<script src="lib/jquery/jquery-1.10.2.min.js"></script> <!-- needed for Bootstrap -->
+<script src="lib/bootstrap/bootstrap.min.js"></script>
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
+<script src="lib/google-analytics/google-analytics-bundle.js"></script>
+<script src="js/popup.js"></script>
 
 <!-- The front-end angular application -->
 <script src="app/app.js"></script>

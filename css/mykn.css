@@ -49,10 +49,9 @@ ul ul {
   background: 0 50% no-repeat;
   box-sizing: border-box;
   overflow: hidden;
-  text-overflow: ellipsis;
+  /*text-overflow: ellipsis;*/
   white-space: pre;
   text-align: left;
-  /*background-image: url("../img/logo/48x48.png"); !* @todo this doesn't work due to permissions but there's a workaround to be found somewhere *!*/
 }
 
 hr {
@@ -98,3 +97,54 @@ hr {
   font-weight: 200;
   margin: 0;
 }
+
+.rightify {
+  position: absolute;
+  right: 5px;
+  /*margin-left: 5px;*/
+}
+
+.stitch-row {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 5px;
+  white-space: nowrap;
+}
+
+.stitch-title {
+  padding-right: 20px;
+  text-overflow: clip;
+}
+
+.stitch-row:hover {
+  background-color: #eeeeee;
+}
+
+/*!* Define a class to specify a tooltip upon hover*!*/
+/*.tooltip {*/
+  /*position: relative;*/
+  /*display: inline-block;*/
+  /*border-bottom: 1px dotted black;*/
+/*}*/
+
+/*!* Define a class that styles the tooltip text *!*/
+/*.tooptiptext {*/
+  /*visibility: hidden;*/
+  /*width: 120px;*/
+  /*background-color: black;*/
+  /*color: #fff;*/
+  /*text-align: center;*/
+  /*padding: 5px 0;*/
+  /*border-radius: 6px;*/
+  /*position: absolute;*/
+  /*z-index: 1;*/
+/*}*/
+
+/*.tooltip .tooltip-left {*/
+  /*right: 105%;*/
+  /*top: -5px;*/
+/*}*/
+
+/*.tooltiptext {*/
+  /*visibility: visible;*/
+/*}*/
