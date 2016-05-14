@@ -120,6 +120,14 @@ hr {
   background-color: #eeeeee;
 }
 
+.icon-node {
+  cursor: -webkit-grab;
+}
+
+.icon-node:active {
+  cursor: -webkit-grabbing;
+}
+
 /*!* Define a class to specify a tooltip upon hover*!*/
 /*.tooltip {*/
   /*position: relative;*/

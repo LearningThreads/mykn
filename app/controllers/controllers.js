@@ -62,7 +62,6 @@ angular.module('popup')
       };
 
       var verifyFavIconUrl = function verifyFavIconUrl(favIconUrl) {
-        console.log(favIconUrl);
         if (favIconUrl.includes('chrome://theme') || isEmpty(favIconUrl)) {
           return '/img/logo/16x16.png';
         } else {
@@ -181,7 +180,6 @@ angular.module('popup')
         } else {
           var nodeIds = $scope.db.graphs({___id:threadId}).first().nodes;
           var nodeArr = $scope.db.nodes(nodeIds).get();
-          console.log(nodeArr);
           if (nodeIds.indexOf(undefined) >= 0) throw new Error('Whoops!');
           return nodeArr;
         }

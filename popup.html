@@ -102,7 +102,7 @@ Policy documentation[1] for details and explanation.
             <!--placeholder="Add your description here."-->
             <!--ng-model="newThreadDescription"><br>-->
 
-            <!-- Add and cancel buttons -->
+            <!-- Add and Cancel buttons -->
             <button class="btn btn-sm btn-success"
                     type="button"
                     ng-click="addThread()"
@@ -124,16 +124,24 @@ Policy documentation[1] for details and explanation.
     <!--<p class="section-header">Stitches-->
     <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
     <!--</p>-->
-    <div id="stitches" ng-if="stitchesExist" >
-      <div class="label stitch-row"
-           style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
-           ng-class="'stitch-' + stitch.id"
-           ng-repeat="stitch in currentStitches track by $index"><a class="a-stitch" ng-click="loadTab(stitch.url)">
-        <span class="stitch-title">{{stitch.title}}</span></a>
-        <a ng-if="currentThread.title!==getMasterThreadTitle()"
-           ng-click="removeStitch(currentThread.___id, stitch.___id)">
+    <div id="stitches">
+      <div ng-if="stitchesExist">
+        <div class="label stitch-row"
+             style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
+             ng-class="'stitch-' + stitch.___id"
+             ng-repeat="stitch in currentStitches track by $index">
+          <!--<i class="fa fa-dot-circle-o icon-node droptarget"-->
+             <!--id="stitch-{{stitch.___id}}"-->
+             <!--draggable="true">-->
+          <!--</i>-->
+          <a class="a-stitch" ng-click="loadTab(stitch.url)">
+            <span class="stitch-title">{{stitch.title}}</span>
+          </a>
+          <a ng-if="currentThread.title!==getMasterThreadTitle()"
+             ng-click="removeStitch(currentThread.___id, stitch.___id)">
             <i class="fa fa-trash-o icon-action rightify" style="background-color:white;padding-left:0;"></i>
-        </a>
+          </a>
+        </div>
       </div>
     </div>
   </div>
