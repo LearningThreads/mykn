@@ -27,6 +27,33 @@ function exportNetwork() {
 document.getElementById('clearAll').addEventListener('click', clearAll);
 document.getElementById('exportNetwork').addEventListener('click', exportNetwork);
 
+// Imports graph data from a file. The file must be encoded properly.
+function importNetwork(file) {
+
+  var reader = new FileReader();
+
+  var header = 'data:application/json;base64,';
+
+  reader.onload = function(event) {
+    the_url = event.target.result;
+    if (the_url.slice(0,header.length) === header) {
+      console.log(JSON.parse(atob(the_url.slice(header.length))));
+    } else {
+      console.log('This file is not the correct format');
+    }
+  };
+
+  reader.readAsDataURL(file);
+
+}
+
+// detect a change in a file input with an id of “the-file-input”
+$("#the-file-input").change(function() {
+  // will log a FileList object, view gifs below
+  importNetwork(this.files[0]);
+  //console.log(this.files);
+});
+
 
 
 

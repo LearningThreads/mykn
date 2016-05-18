@@ -3,9 +3,23 @@
 <head><title>MYKN Options</title></head>
 <body>
 
-<button id="clearAll">CLEAR ALL</button>
-<button id="exportNetwork">Export Network to File</button>
+<div>
+  <h3>Clear All Data</h3>
+  <button id="clearAll">CLEAR ALL</button>
+  </div>
 
+<div>
+  <h3>Export Data</h3>
+  <button id="exportNetwork">Export All Data to File</button>
+</div>
+
+<!-- with input that accepts one file -->
+<div>
+  <h3>Import Data</h3>
+  <input id="the-file-input" type="file">
+</div>
+
+<script src="lib/jquery/jquery-1.10.2.min.js"></script>
 <script src="js/options.js"></script>
 </body>
 </html>

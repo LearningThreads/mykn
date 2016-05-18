@@ -88,7 +88,7 @@ gulp.task('scripts', function() {
 
     // JSHint & compile
     .pipe(jshint())
-    .pipe(jshint.reporter('fail'))
+    .pipe(jshint.reporter('fail', {verbose: true}))
     .on('error', onError)
 
     // Compile

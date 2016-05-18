@@ -76,7 +76,29 @@ Policy documentation[1] for details and explanation.
     </form>
   </div>
 
-  <!-- Modal element to specify the thread title -->
+  <!-- Modal element to verify a user action @todo make this a directive -->
+  <div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Verify</h4>
+        </div>
+        <div class="modal-body">
+          <!-- Yes and Cancel buttons @todo Need to implement the completeAction functionality -->
+          <button class="btn btn-sm btn-success"
+                  type="button"
+                  ng-click="completeAction(fnc)"
+                  data-dismiss="modal"
+                  data-target="#newThreadButtonModal">Yes</button>
+          <button class="btn btn-sm btn-danger"
+                  data-dismiss="modal"
+                  data-target="#newThreadButtonModal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal element to specify the thread title @todo make this a directive-->
   <div class="modal fade" id="newThreadButtonModal" tabindex="-1" role="dialog" aria-labelledby="newThreadButtonModelLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -130,10 +152,10 @@ Policy documentation[1] for details and explanation.
              style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
              ng-class="'stitch-' + stitch.___id"
              ng-repeat="stitch in currentStitches track by $index">
-          <!--<i class="fa fa-dot-circle-o icon-node droptarget"-->
-             <!--id="stitch-{{stitch.___id}}"-->
-             <!--draggable="true">-->
-          <!--</i>-->
+          <i class="fa fa-dot-circle-o icon-node droptarget"
+             id="stitch-{{stitch.___id}}"
+             draggable="true">
+          </i>
           <a class="a-stitch" ng-click="loadTab(stitch.url)">
             <span class="stitch-title">{{stitch.title}}</span>
           </a>
@@ -155,12 +177,15 @@ Policy documentation[1] for details and explanation.
 </div>
 
 <!-- Scripts: placed at end for load optimization-->
-<script src="lib/jquery/jquery-1.10.2.min.js"></script> <!-- needed for Bootstrap -->
+<script src="lib/jquery/jquery-1.10.2.min.js"></script>
 <script src="lib/bootstrap/bootstrap.min.js"></script>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
 <script src="lib/google-analytics/google-analytics-bundle.js"></script>
 <script src="js/popup.js"></script>
+
+<!-- Learning Threads JS library -->
+<script src="js/learning_threads.js"></script>
 
 <!-- The front-end angular application -->
 <script src="app/app.js"></script>

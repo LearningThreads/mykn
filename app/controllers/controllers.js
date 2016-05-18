@@ -62,7 +62,9 @@ angular.module('popup')
       };
 
       var verifyFavIconUrl = function verifyFavIconUrl(favIconUrl) {
-        if (favIconUrl.includes('chrome://theme') || isEmpty(favIconUrl)) {
+        if (!favIconUrl
+          || isEmpty(favIconUrl)
+          || favIconUrl.includes('chrome://theme')) {
           return '/img/logo/16x16.png';
         } else {
           return favIconUrl;

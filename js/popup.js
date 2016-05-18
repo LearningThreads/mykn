@@ -51,7 +51,8 @@ function mykn_initialize() {
   tracker.sendAppView('Loaded');
 
   // Add node listeners
-  //addStitchListeners();
+  addStitchListeners();
+
 }
 
 function mykn_analytics_config(config) {
