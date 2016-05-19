@@ -297,8 +297,6 @@ window.learning_threads = (function () {
   // Add data to an existing database
   function addData(db, data) {
 
-    console.log(data);
-
     var nodes = addNodes(db.nodes, data.nodes);
     //var edges = addEdges(db.edges, data.edges, nodes);
     var edges = [];
