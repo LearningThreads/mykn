@@ -3,7 +3,8 @@ angular.module('popup')
     '$scope',
     'build_ltdb',
     'prepSave_ltdb',
-    function($scope,build_ltdb,prepSave_ltdb) {
+    'prepGraphForExport',
+    function($scope,build_ltdb,prepSave_ltdb,prepGraphForExport) {
 
       // Local variables
       var masterThreadName = "Master Thread";
@@ -158,6 +159,18 @@ angular.module('popup')
 
         }
 
+      };
+
+      // Export a thread to file
+      $scope.exportGraph = function exportGraph(threadId) {
+        var data = prepGraphForExport($scope.db, threadId);
+        var str = JSON.stringify(data);
+        var url = 'data:application/json;base64,' + btoa(str);
+        chrome.downloads.download({
+          url: url,
+          filename: $scope.currentThreadName + '.json',
+          saveAs: true
+        })
       };
 
       // Define an array of stitches for the viewer

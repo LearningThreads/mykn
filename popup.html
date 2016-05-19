@@ -61,10 +61,16 @@ Policy documentation[1] for details and explanation.
               ng-change="setCurrentStitches()">
       </select><!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
 
-      <a ng-if="currentThread.title!==getMasterThreadTitle()"
-         ng-click="removeThread(currentThread.___id)">
-        <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:10px;"></i>
-      </a>
+      <span ng-if="currentThread.title!==getMasterThreadTitle()">
+        <a ng-click="exportGraph(currentThread.___id)">
+          <i class="fa fa-share-square-o icon-action" style="background-color:white; margin-left:5px;"></i>
+        </a>
+        <a ng-click="removeThread(currentThread.___id)">
+          <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:5px;"></i>
+        </a>
+      </span>
+
+      <span class="spacer-right-70"></span>
 
       <!-- button to add stitch to thread -->
       <button class="btn btn-primary btn-xs rightify"

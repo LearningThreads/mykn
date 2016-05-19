@@ -37,7 +37,24 @@ function importNetwork(file) {
   reader.onload = function(event) {
     the_url = event.target.result;
     if (the_url.slice(0,header.length) === header) {
-      console.log(JSON.parse(atob(the_url.slice(header.length))));
+      var new_data = JSON.parse(atob(the_url.slice(header.length)));
+      var dataToAdd = {};
+      if (new_data.ltdb === undefined) {
+        dataToAdd = new_data;  // this was a subset, possibly one graph, database export
+        dataToAdd.graphs = [dataToAdd.graphs]; // right now we only support one graph
+      } else {
+        dataToAdd = new_data.ltdb; // this was a complete database export
+      }
+
+      // First load the existing database
+      chrome.storage.local.get(["ltdb"], function(obj) {
+        var db = window.learning_threads.build_ltdb(obj.ltdb);
+        window.learning_threads.addData(db, dataToAdd);
+        chrome.storage.local.set({
+          "ltdb":window.learning_threads.prepSave_ltdb()(db)
+        }, function() {});
+      });
+
     } else {
       console.log('This file is not the correct format');
     }
@@ -49,9 +66,7 @@ function importNetwork(file) {
 
 // detect a change in a file input with an id of “the-file-input”
 $("#the-file-input").change(function() {
-  // will log a FileList object, view gifs below
   importNetwork(this.files[0]);
-  //console.log(this.files);
 });
 
 

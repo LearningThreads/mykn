@@ -61,7 +61,7 @@ hr {
 
 .icon-action {
   cursor: pointer;
-  padding-left: 10px;
+  /*padding-left: 10px;*/
   font-size: medium;
 }
 
@@ -127,6 +127,8 @@ hr {
 .icon-node:active {
   cursor: -webkit-grabbing;
 }
+
+.spacer-right-70 { margin-right: 70px; }
 
 /*!* Define a class to specify a tooltip upon hover*!*/
 /*.tooltip {*/
