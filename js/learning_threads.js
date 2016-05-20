@@ -222,14 +222,56 @@ window.learning_threads = (function () {
     };
   }
 
+  function addEdges(collection, data, nodes) {
+    // Get the original IDs for the mapping
+    var origIds = [];
+    var newIds = [];
+
+    // Loop over edges to be added
+    for (var o=0; o<data.length; o++) {
+      // Save original ___id for the edge
+      origIds.push(data[o].___id);
+
+      // Check for duplicate before inserting
+      var dup = collection({
+          from:data[o].from,
+          to:data[o].to
+        }).first() || collection({
+          from:data[o].to,
+          to:data[o].from
+        }).first();
+
+      if (!dup) {
+        data[o].from = applyIdMapping([data[o].from], nodes.map)[0];
+        data[o].to = applyIdMapping([data[o].to], nodes.map)[0];
+        newIds.push(collection.insert(data[o]).first().___id);
+      } else {
+        newIds.push(dup.___id);
+      }
+
+    }
+
+    // Define the map
+    var id_map = {
+      origIds:origIds,
+      newIds:newIds
+    };
+
+    // Return the collection with the map
+    return {
+      collection: collection,
+      map: id_map
+    };
+  }
+
   function addGraphs(collection, data, nodes, edges) {
     // Get the original IDs for the mapping
     var origIds = [];
     var newIds = [];
 
-    // Loop over nodes to be added
+    // Loop over graphs to be added
     for (var o=0; o<data.length; o++) {
-      // Save original ___id for the node
+      // Save original ___id for the graph
       origIds.push(data[o].___id);
 
       // Check for duplicate before inserting
@@ -311,8 +353,7 @@ window.learning_threads = (function () {
   function addData(db, data) {
 
     var nodes = addNodes(db.nodes, data.nodes);
-    //var edges = addEdges(db.edges, data.edges, nodes);
-    var edges = [];
+    var edges = addEdges(db.edges, data.edges, nodes);
     if (typeof data.graphs === 'string') {
       addGraphs(db.graphs, JSON.parse(data.graphs), nodes, edges);
     } else {

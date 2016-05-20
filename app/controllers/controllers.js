@@ -15,6 +15,12 @@ angular.module('popup')
         return (!str || 0 === str.length);
       }
 
+      function replaceInvalidChars(str) {
+        return str.replace(/[\u00A0-\u2666]/g, function(c) {
+          return '&#' + c.charCodeAt(0) + ';';
+        });
+      }
+
 
       // Variables defined on this scope
       $scope.db = undefined;
@@ -162,11 +168,14 @@ angular.module('popup')
 
       };
 
+
+
       // Export a thread to file
       $scope.exportGraph = function exportGraph(threadId) {
         var data = prepGraphForExport($scope.db, threadId);
         var title = $scope.db.graphs(threadId).first().title;
         var str = JSON.stringify(data);
+        str = replaceInvalidChars(str);
         var url = 'data:application/json;base64,' + btoa(str);
         chrome.downloads.download({
           url: url,

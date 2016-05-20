@@ -1,0 +1,12 @@
+circle:hover {
+  fill: #00acee;
+}
+
+.a-stitch {
+  cursor: pointer;
+}
+
+.a-stitch:hover {
+  fill: #00acee;
+  text-decoration: underline;
+}

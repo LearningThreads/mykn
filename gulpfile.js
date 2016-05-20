@@ -73,7 +73,7 @@ gulp.task('app', function() {
     //.on('error', onError)
     //.pipe(concat('mykn_frontend.js'))
     //.pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(dest + '/app'))
     .pipe(notify({ message: 'App task complete' }));
 });
@@ -96,7 +96,7 @@ gulp.task('scripts', function() {
 
     // Minify
     //.pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(dest + '/js'))
 
     // Notification

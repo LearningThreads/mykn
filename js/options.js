@@ -8,12 +8,26 @@ function clearAll() {
   });
 }
 
+function replaceInvalidChars(str) {
+  return str.replace(/[\u00A0-\u2666]/g, function(c) {
+    return '&#' + c.charCodeAt(0) + ';';
+  });
+}
+
+// from http://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
+function decodeSpecialChars(str) {
+  var t = document.createElement("textarea");
+  t.innerHTML = str;
+  return t.value;
+}
+
 // Export the network to a file.  Adopted from Rob W. StackOverflow answer:
 // http://stackoverflow.com/questions/23160600/chrome-extension-local-storage-how-to-export
 function exportNetwork() {
   chrome.storage.local.get(null, function(obj) {
     // Convert to a string
     var str = JSON.stringify(obj);
+    str = replaceInvalidChars(str);
     var url = 'data:application/json;base64,' + btoa(str);
     chrome.downloads.download({
       url: url,
@@ -37,7 +51,8 @@ function importNetwork(file) {
   reader.onload = function(event) {
     the_url = event.target.result;
     if (the_url.slice(0,header.length) === header) {
-      var new_data = JSON.parse(atob(the_url.slice(header.length)));
+      var new_data = JSON.parse(
+        decodeSpecialChars(atob(the_url.slice(header.length))));
       var dataToAdd = {};
       if (new_data.ltdb === undefined) {
         dataToAdd = new_data;  // this was a subset, possibly one graph, database export

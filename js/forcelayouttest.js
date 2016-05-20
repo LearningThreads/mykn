@@ -24,8 +24,8 @@ function buildSVG() {
       .nodes(dataset.nodes)
       .links(dataset.edges)
       .size([width, height])
-      .linkDistance([50])
-      .charge([-100]);
+      .linkDistance([100])
+      .charge([-200]);
 
     var svg = d3.select('body').append('svg')
       .attr('width', width)
@@ -45,6 +45,21 @@ function buildSVG() {
       .attr("r", 10)
       //.style("fill", function(d,i) { return colors(i);})
       .call(force.drag);
+
+    var text = svg.selectAll("text")
+      .data(dataset.nodes)
+      .enter()
+      .append("a")
+      .classed("a-stitch", true)
+      .on('click', function(d) {
+        chrome.tabs.create({
+          url: d.url
+        });
+      })
+      .append("text")
+      .text(function(d) {
+        return d.title;
+      });
 
     force.on("tick", function () {
       edges
@@ -66,6 +81,14 @@ function buildSVG() {
           return d.x;
         })
         .attr("cy", function (d) {
+          return d.y;
+        });
+
+      text
+        .attr("x", function (d) {
+          return d.x + 10;
+        })
+        .attr("y", function (d) {
           return d.y;
         });
     });
