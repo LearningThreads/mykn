@@ -28,7 +28,10 @@ function addStitchListeners() {
       //event.target.style.border = "";
       var data = event.dataTransfer.getData("Text");
       console.log(data);
+      console.log(event.target.id);
       //event.target.appendChild(document.getElementById(data));
+      //createYarn(data, event.target.id);
+      console.log(window.angular.element($0).scope());
     }
   });
 }
@@ -51,7 +54,7 @@ function mykn_initialize() {
   tracker.sendAppView('Loaded');
 
   // Add node listeners
-  addStitchListeners();
+  //addStitchListeners();
 
 }
 

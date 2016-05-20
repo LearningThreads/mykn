@@ -2,5 +2,6 @@
 
 var app = angular.module('popup', [
   'popup.services',
-  'popup.controllers'
+  'popup.controllers',
+  'popup.directives'
 ]);

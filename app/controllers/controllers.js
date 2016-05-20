@@ -4,7 +4,8 @@ angular.module('popup')
     'build_ltdb',
     'prepSave_ltdb',
     'prepGraphForExport',
-    function($scope,build_ltdb,prepSave_ltdb,prepGraphForExport) {
+    'forceLayout',
+    function($scope,build_ltdb,prepSave_ltdb,prepGraphForExport,forceLayout) {
 
       // Local variables
       var masterThreadName = "Master Thread";
@@ -92,10 +93,10 @@ angular.module('popup')
         }
 
         // Always add the stitch to the Master Thread
-        var stitchIds = $scope.db.graphs({title:"Master Thread"}).first().nodes;
+        var stitchIds = $scope.db.graphs({title:masterThreadName}).first().nodes;
         if (stitchIds.indexOf(stitchId) == -1) {
           stitchIds.push(stitchId);
-          $scope.db.graphs({name:"Master Thread"}).update({nodes:stitchIds});
+          $scope.db.graphs({name:masterThreadName}).update({nodes:stitchIds});
         }
 
         // If threadId defined, add the stitchId to the right thread
@@ -164,11 +165,12 @@ angular.module('popup')
       // Export a thread to file
       $scope.exportGraph = function exportGraph(threadId) {
         var data = prepGraphForExport($scope.db, threadId);
+        var title = $scope.db.graphs(threadId).first().title;
         var str = JSON.stringify(data);
         var url = 'data:application/json;base64,' + btoa(str);
         chrome.downloads.download({
           url: url,
-          filename: $scope.currentThreadName + '.json',
+          filename: title + '.json',
           saveAs: true
         })
       };
@@ -244,16 +246,56 @@ angular.module('popup')
 
 
       // --- Yarns --- //
-      $scope.addYarn = function addYarn(fromStitchId, toStitchId) {
-        var yarn = getEmptyYarn();
-        yarn.id = $scope.nextID;
-        yarn.type = "sequence";
-        yarn.fromStitch = fromStitchId;
-        yarn.toStitch = toStitchId;
-        $scope.yarns.push(yarn);
-        chrome.storage.local.set({"yarns":$scope.yarns}, function() {
-          setNextID();
-        });
+      $scope.createYarn = function createYarn(fromStitchId, toStitchId, threadId) {
+
+        var yarnId;
+
+        // Look in the database to see if this is a unique yarn
+        var dupYarn = $scope.db.edges({
+          from:fromStitchId,
+          to:toStitchId
+        }).first() || $scope.db.edges({
+            from:toStitchId,
+            to:fromStitchId
+          }).first();
+
+        if (!dupYarn) {
+          // Insert the yarn: for a sequential link it makes more sense from the user's
+          // perspective to drag in the link that will follow the drop target.
+          yarnId = $scope.db.edges.insert({
+            from: toStitchId,
+            to: fromStitchId,
+            type: 'sequential'  // the only type allowed right now
+          }).first().___id;
+        } else {
+          yarnId = dupYarn.___id;
+        }
+
+        // Always add the yarn to the Master Thread
+        var yarnIds = $scope.db.graphs({title:masterThreadName}).first().edges;
+        if (yarnIds.indexOf(yarnId) == -1) {
+          yarnIds.push(yarnId);
+          $scope.db.graphs({name:masterThreadName}).update({edges:yarnIds});
+        }
+
+        // ***
+        // For now lets say that all yarns are implicitly included
+        // in a graph if the two stitches are in the graph. This could
+        // change in the future.
+        // ***
+
+        //// If threadId defined, add the yarnId to the right thread
+        //if (threadId !== undefined) {
+        //  yarnIds = $scope.db.graphs(threadId).first().edges;
+        //  if (yarnIds.indexOf(yarnId) == -1) {
+        //    yarnIds.push(yarnId);
+        //    $scope.db.graphs(threadId).update({edges:yarnIds});
+        //  }
+        //}
+
+        // Save the database whenever a yarn is added to the "popup copy"
+        // This could probably be implemented a lot differently (i.e. better)
+        saveDB();
       };
 
       $scope.loadTab = function(url) {
@@ -266,6 +308,17 @@ angular.module('popup')
         chrome.tabs.create({
           url: 'https://www.learningthreads.co'
         })
+      };
+
+      $scope.viewGraph = function viewGraph(threadId) {
+        chrome.windows.create({
+          url: 'graphViz.html',
+          type: 'panel',
+          width: 640,
+          height: 480
+        });
+        //var fL = forceLayout;
+        //fL(threadId);
       };
 
       // Watch the currentThread value to save it to storage when it changes. This enables us to

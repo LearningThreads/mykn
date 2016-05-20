@@ -149,6 +149,7 @@ gulp.task('library', function() {
   return gulp.src([
       src+'/lib/*/angular.min.js',   // @todo: Change these to pull from node_modules
       src+'/lib/*/angular-csp.css',
+      src+'/lib/*/d3.min.js',
       src+'/lib/*/README.md',
       src+'/lib/*/bootstrap.min.js',
       src+'/lib/*/google-analytics-bundle.js',

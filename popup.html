@@ -70,6 +70,12 @@ Policy documentation[1] for details and explanation.
         </a>
       </span>
 
+      <span ng-if="currentThread.title===getMasterThreadTitle()">
+        <a ng-click="viewGraph(currentThread.___id)">
+          <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
+        </a>
+      </span>
+
       <span class="spacer-right-70"></span>
 
       <!-- button to add stitch to thread -->
@@ -160,7 +166,8 @@ Policy documentation[1] for details and explanation.
              ng-repeat="stitch in currentStitches track by $index">
           <i class="fa fa-dot-circle-o icon-node droptarget"
              id="stitch-{{stitch.___id}}"
-             draggable="true">
+             draggable="true"
+             drag-effects>
           </i>
           <a class="a-stitch" ng-click="loadTab(stitch.url)">
             <span class="stitch-title">{{stitch.title}}</span>
@@ -184,6 +191,7 @@ Policy documentation[1] for details and explanation.
 
 <!-- Scripts: placed at end for load optimization-->
 <script src="lib/jquery/jquery-1.10.2.min.js"></script>
+<script src="lib/d3/d3.min.js" charset="utf-8"></script>
 <script src="lib/bootstrap/bootstrap.min.js"></script>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
@@ -196,7 +204,9 @@ Policy documentation[1] for details and explanation.
 <!-- The front-end angular application -->
 <script src="app/app.js"></script>
 <script src="app/services/storage.js"></script>
+<!--<script src="app/services/graphLayouts.js"></script>-->
 <script src="app/controllers/controllers.js"></script>
+<script src="app/directives/dragEffects.js"></script>
 
 </body>
 

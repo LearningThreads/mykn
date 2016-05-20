@@ -15,6 +15,8 @@ window.learning_threads = (function () {
   // database is implemented
   //
 
+  var masterTitle = "Master Thread";
+
   // Node ("stitch") template
   var nodeTemplate = {
     title: "",
@@ -42,16 +44,16 @@ window.learning_threads = (function () {
     edges: []
   };
 
-  // Apply node mapping. When an object (edge or graph) contains an
-  // array of node ids, that array may need to be remapped when the database
-  // is reconstructed on the fly.
-  function applyNodeMapping(nodeIds, map) {
-    for (var s=0; s<nodeIds.length; s++) {
-      var newId = map.newIds[map.origIds.indexOf(nodeIds[s])];
+  // Apply ID mapping. When objects contain arrays of ids, that array
+  // may need to be remapped when the database is reconstructed
+  // on the fly.
+  function applyIdMapping(ids, map) {
+    for (var s=0; s<ids.length; s++) {
+      var newId = map.newIds[map.origIds.indexOf(ids[s])];
       if (newId === undefined) throw new Error('Your database has been corrupted.');
-      nodeIds[s] = newId;
+      ids[s] = newId;
     }
-    return nodeIds;
+    return ids;
   }
 
   // Create collection and an ID map. Because we're reconstructing
@@ -144,6 +146,18 @@ window.learning_threads = (function () {
   function createEdgeCollection(edgesData, nodes) {
     var edges = createCollectionAndIdMap(edgesData, 'yarns', edgeTemplate);
 
+    // Loop over each edge and remap the to and from nodes
+    edges.collection().each(function(edge,idx) {
+
+      // Map the to node
+      edges.collection(edge.___id).update({
+        to: applyIdMapping([edge.to], nodes.map)[0]});
+
+      // Map the from node
+      edges.collection(edge.___id).update({
+        from: applyIdMapping([edge.from], nodes.map)[0]});
+    });
+
     return {
       edges: edges.collection,
       map: edges.map
@@ -186,15 +200,13 @@ window.learning_threads = (function () {
         if (gIdx === 0) return; // skip the master thread
 
         // Map node IDs
-        var nodeIds = applyNodeMapping(g.nodes, nodes.map);
+        var nodeIds = applyIdMapping(g.nodes, nodes.map);
         graphs(g.___id).update({nodes: nodeIds});
 
-        //// Map edge IDs
-        //var edgeIds = g.edges;
-        //for (var y=0; y< edgeIds.length; y++) {
-        //  edgeIds[y] = edges.map[edgeIds[y]];
-        //}
-        //graphs(g.___id).update({edges:edgeIds});
+        // Map edge IDs
+        var edgeIds = applyIdMapping(g.edges, edges.map);
+        graphs(g.___id).update({edges: edgeIds});
+
       });
     }
 
@@ -225,7 +237,8 @@ window.learning_threads = (function () {
 
       if (!dup) {
         // Insert data to the collection
-        data[o].nodes = applyNodeMapping(data[o].nodes, nodes.map);
+        data[o].nodes = applyIdMapping(data[o].nodes, nodes.map);
+        data[o].edges = applyIdMapping(data[o].edges, edges.map);
         newIds.push(collection.insert(data[o]).first().___id);
       } else {
         newIds.push(dup.___id);
@@ -282,7 +295,7 @@ window.learning_threads = (function () {
     var getGraphData = function getGraphData(graphs) {
       //gs = graphs({title:{'!is':'Master Thread'}}).get();
       // Remove the master graph from the array that gets stored.
-      return JSON.stringify(graphs({'title': {'!is': 'Master Thread'}}).get());
+      return JSON.stringify(graphs({'title': {'!is': masterTitle}}).get());
     };
 
     return function (db) {
@@ -307,12 +320,36 @@ window.learning_threads = (function () {
     }
   }
 
+  // Get all of the edges that exist in the master database that are
+  // inclusive based on an array of node IDs
+  function getInclusiveEdges(db, nodeIds) {
+    edges = [];
+    for (var i=0; i<nodeIds.length; i++) {
+      for (var j=i+1; j<nodeIds.length; j++) {
+        var yarn = db.edges({
+            from:nodeIds[i],
+            to:nodeIds[j]
+          }).first() || db.edges({
+            from:nodeIds[j],
+            to:nodeIds[i]
+          }).first();
+        if (yarn) edges.push(yarn.___id);
+      }
+    }
+    return edges;
+  }
+
+
   // Prepare a single graph for export
   function prepGraphForExport(db, graphId) {
 
     var graphData = db.graphs(graphId).first();
     var nodeData = db.nodes(graphData.nodes).get();
-    var edgeData = db.nodes(graphData.edges).get();
+    //var edgeData = db.nodes(graphData.edges).get();
+
+    // Ok, so right now we're not saving the edges per graph, but
+    // we still need a way to export the right edges.
+    var edgeData = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
 
     return {
       nodes: nodeData,
@@ -322,12 +359,15 @@ window.learning_threads = (function () {
 
   }
 
+
+
   // Learning Threads library
   return  {
     build_ltdb:build_ltdb,
     prepSave_ltdb:prepSave_ltdb,
     addData:addData,
-    prepGraphForExport:prepGraphForExport
+    prepGraphForExport:prepGraphForExport,
+    masterTitle:masterTitle
   };
 
 }());
