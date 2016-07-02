@@ -79,7 +79,45 @@ angular.module('popup')
         }
       };
 
-      // Add a stitch to the desired thread (master thread if not defined)
+      $scope.addStitchObj = function addStitchObj(stitch, threadId) {
+
+        var stitchId;
+
+        // Look in the database to see if this is a unique stitch
+        var dupStitch = $scope.db.nodes({url:stitch.url}).first();
+
+        if (!dupStitch) {
+          // Insert the stitch
+          stitchId = $scope.db.nodes.insert({
+            title: stitch.title,
+            url: stitch.url,
+            favIconUrl: verifyFavIconUrl('chrome://favicon/size/16@1x/' + stitch.url)
+          }).first().___id;
+        } else {
+          stitchId = dupStitch.___id;
+        }
+
+        // Always add the stitch to the Master Thread
+        var stitchIds = $scope.db.graphs({title:masterThreadName}).first().nodes;
+        if (stitchIds.indexOf(stitchId) == -1) {
+          stitchIds.push(stitchId);
+          $scope.db.graphs({name:masterThreadName}).update({nodes:stitchIds});
+        }
+
+        // If threadId defined, add the stitchId to the right thread
+        if (threadId !== undefined) {
+          stitchIds = $scope.db.graphs(threadId).first().nodes;
+          if (stitchIds.indexOf(stitchId) == -1) {
+            stitchIds.push(stitchId);
+            $scope.db.graphs(threadId).update({nodes:stitchIds});
+          }
+        }
+        $scope.setCurrentStitches();
+
+      };
+
+      // Add a stitch to the desired thread
+      // (will just add to the master thread if threadId not defined)
       $scope.addStitch = function addStitch(threadId) {
 
         var stitchId;
@@ -261,9 +299,9 @@ angular.module('popup')
 
         // Look in the database to see if this is a unique yarn
         var dupYarn = $scope.db.edges({
-          from:fromStitchId,
-          to:toStitchId
-        }).first() || $scope.db.edges({
+            from:fromStitchId,
+            to:toStitchId
+          }).first() || $scope.db.edges({
             from:toStitchId,
             to:fromStitchId
           }).first();
@@ -338,5 +376,34 @@ angular.module('popup')
           });
         }
       });
+
+      // Print out the bookmarks
+      // Traverse the bookmark tree, and print the folder and nodes.
+      $scope.printBookmarks = function dumpBookmarks() {
+        chrome.bookmarks.getTree(
+          function(bookmarkTreeNodes) {
+            dumpTreeNodes(bookmarkTreeNodes);
+            $scope.$apply(function() {
+              saveDB();
+            })
+          });
+      };
+
+      function dumpTreeNodes(bookmarkNodes) {
+        var i;
+        for (i = 0; i < bookmarkNodes.length; i++) {
+          dumpNode(bookmarkNodes[i]);
+        }
+      }
+
+      function dumpNode(bookmarkNode) {
+        if (bookmarkNode.children && bookmarkNode.children.length > 0) {
+          // This is a directory, so recursively call
+          dumpTreeNodes(bookmarkNode.children);
+        } else {
+          // Use the title and url to add a stitch
+          $scope.addStitchObj(bookmarkNode);
+        }
+      }
     }
   ]);

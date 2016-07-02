@@ -81,6 +81,7 @@ hr {
   border: 1px solid hsl(214, 91%, 85%);
   border-radius: 3px;
   box-sizing: border-box;
+  max-height: 400px;
 
 }
 
@@ -90,7 +91,7 @@ hr {
 }
 
 .permissionCheck {
-  position: absolute;
+  position: fixed;
   right: 5px;
   bottom: 5px;
   font-size: x-small;

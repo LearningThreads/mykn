@@ -12,7 +12,7 @@ Policy documentation[1] for details and explanation.
  [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
 -->
 
-<html ng-app=popup ng-csp>
+<html ng-app=popup ng-csp style="height:400px;">
 <head>
 
   <title>My Knowledge Network</title>
@@ -29,7 +29,7 @@ Policy documentation[1] for details and explanation.
 
 <base target="_blank" />
 
-<body style="min-width: 400px; min-height: 200px;">
+<body style="min-width: 400px; min-height:100px; height: 400px;">
 
 <div ng-controller="MainController">
   <!--<p class="tinytext-right">With love from <a href="http://www.learningthreads.co" tabindex="-1">{{companyShortName}}</a> #keeplearning </p>-->
@@ -73,6 +73,12 @@ Policy documentation[1] for details and explanation.
       <span ng-if="currentThread.title===getMasterThreadTitle()">
         <a ng-click="viewGraph(currentThread.___id)">
           <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
+        </a>
+      </span>
+
+      <span ng-if="currentThread.title===getMasterThreadTitle()">
+        <a ng-click="printBookmarks()">
+          <i class="fa fa-bookmark icon-action" style="background-color:white; margin-left:5px;"></i>
         </a>
       </span>
 
@@ -200,6 +206,9 @@ Policy documentation[1] for details and explanation.
 
 <!-- Learning Threads JS library -->
 <script src="js/learning_threads.js"></script>
+
+<!-- Library to help import and organize bookmarks -->
+<script src="js/bookmark_lib.js"></script>
 
 <!-- The front-end angular application -->
 <script src="app/app.js"></script>

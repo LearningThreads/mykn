@@ -1,7 +1,7 @@
 {
   "name": "My Knowledge Network",
   "short_name": "MYKN",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
@@ -9,6 +9,7 @@
     "downloads",
     "tabs",
     "storage",
+    "bookmarks",
     "chrome://favicon/",
     "https://www.google-analytics.com/"
   ],

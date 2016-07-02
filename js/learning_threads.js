@@ -401,7 +401,6 @@ window.learning_threads = (function () {
   }
 
 
-
   // Learning Threads library
   return  {
     build_ltdb:build_ltdb,
