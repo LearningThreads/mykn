@@ -64,6 +64,12 @@ angular.module('popup')
         });
       });
 
+      $scope.selectThread = function selectThread(thread) {
+        $scope.currentThread = thread;
+        $scope.currentThreadName = thread.title;
+        $scope.setCurrentStitches();
+      };
+
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
         chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
@@ -77,6 +83,22 @@ angular.module('popup')
         } else {
           return favIconUrl;
         }
+      };
+
+      $scope.addStitchById = function addStitchById(stitchId, threadId) {
+
+        // Add the stitchId to the right thread
+        if (threadId !== undefined) {
+          stitchIds = $scope.db.graphs(threadId).first().nodes;
+          if (stitchIds.indexOf(stitchId) == -1) {
+            stitchIds.push(stitchId);
+            $scope.db.graphs(threadId).update({nodes:stitchIds});
+          }
+        }
+        //$scope.setCurrentStitches();
+
+        saveDB();
+
       };
 
       $scope.addStitchObj = function addStitchObj(stitch, threadId) {

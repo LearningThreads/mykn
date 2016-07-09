@@ -160,28 +160,43 @@ Policy documentation[1] for details and explanation.
 
   <hr>
 
-  <div>
+  <div class="container-fluid">
     <!--<p class="section-header">Stitches-->
     <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
     <!--</p>-->
-    <div id="stitches">
-      <div ng-if="stitchesExist">
-        <div class="label stitch-row"
-             style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
-             ng-class="'stitch-' + stitch.___id"
-             ng-repeat="stitch in currentStitches track by $index">
-          <i class="fa fa-dot-circle-o icon-node droptarget"
-             id="stitch-{{stitch.___id}}"
-             draggable="true"
-             drag-effects>
-          </i>
-          <a class="a-stitch" ng-click="loadTab(stitch.url)">
-            <span class="stitch-title">{{stitch.title}}</span>
-          </a>
-          <a ng-if="currentThread.title!==getMasterThreadTitle()"
-             ng-click="removeStitch(currentThread.___id, stitch.___id)">
-            <i class="fa fa-trash-o icon-action rightify" style="background-color:white;padding-left:0;"></i>
-          </a>
+    <div class="row row-main" style="width:600px;">
+      <div class="col-xs-3 row-panel" style="background-color:#f3f3f3;overflow:scroll;height:400px;">
+        <div id="threadList">
+          <div class=""
+               ng-repeat="thread in getThreads() track by $index">
+            <a class="a-thread droptarget isthread thread-row"
+               ng-click="selectThread(thread)"
+               id="thread-{{thread.___id}}"
+               drag-effects="">{{thread.title}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-9 row-panel" style="padding-left:0;overflow:scroll;height:400px;">
+        <div id="stitches">
+          <div ng-if="stitchesExist">
+            <div class="label stitch-row"
+                 style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
+                 ng-class="'stitch-' + stitch.___id"
+                 ng-repeat="stitch in currentStitches track by $index">
+              <i class="fa fa-dot-circle-o icon-node droptarget"
+                 id="stitch-{{stitch.___id}}"
+                 draggable="true"
+                 drag-effects>
+              </i>
+              <a class="a-stitch" ng-click="loadTab(stitch.url)">
+                <span class="stitch-title">{{stitch.title}}</span>
+              </a>
+              <a ng-if="currentThread.title!==getMasterThreadTitle()"
+                 ng-click="removeStitch(currentThread.___id, stitch.___id)">
+                <i class="fa fa-trash-o icon-action rightify" style="background-color:white;padding-left:0;"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
