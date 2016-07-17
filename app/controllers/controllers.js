@@ -387,7 +387,6 @@ angular.module('popup')
         //$scope.$apply(function() {
           $scope.visualViewFlag = true;
         buildSVG();
-        console.log('Here we are');
         //});
         //chrome.windows.create({
         //  url: 'graphViz.html',

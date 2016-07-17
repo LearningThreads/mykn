@@ -153,6 +153,9 @@ hr {
   height:400px;
 }
 
+.button-banner {
+  white-space:nowrap;
+}
 
 /*.row {*/
   /*overflow: hidden;*/

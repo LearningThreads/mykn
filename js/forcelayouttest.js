@@ -9,23 +9,19 @@ function buildSVG() {
     var nodeIds = db.graphs({title:obj.currentThreadName}).first().nodes;
     var nodess = db.nodes(nodeIds).get();
 
-    //console.log(nodeIds);
-    //console.log(nodess);
-
-    //nodes = db.nodes().get();
-    //var nodeIds = [];
-    //for (var i = 0; i < nodes.length; i++) {
-    //  nodeIds.push(nodes[i].___id);
-    //}
-
-    edges = db.edges().get();
-    for (var j = 0; j < edges.length; j++) {
-      edges[j].source = nodeIds.indexOf(edges[j].from);
-      edges[j].target = nodeIds.indexOf(edges[j].to);
+    // Grab the edges associated with the currently selected thread
+    var edgeIds = window.learning_threads.getInclusiveEdges(db, nodeIds);
+    var edgess = db.edges(edgeIds).get();
+    for (var j = 0; j < edgess.length; j++) {
+      edgess[j].source = nodeIds.indexOf(edgess[j].from);
+      edgess[j].target = nodeIds.indexOf(edgess[j].to);
+      edgess[j].weight = 1;
     }
+
+    // Define the graph as the dataset of nodes and edges
     var dataset = {
       nodes: nodess,
-      edges: edges
+      edges: edgess
     };
 
     var width = 450; // 620;

@@ -361,10 +361,10 @@ window.learning_threads = (function () {
     }
   }
 
-  // Get all of the edges that exist in the master database that are
+  // Get all of the edgeIDs of edges that exist in the master database that are
   // inclusive based on an array of node IDs
   function getInclusiveEdges(db, nodeIds) {
-    edges = [];
+    var edges = [];
     for (var i=0; i<nodeIds.length; i++) {
       for (var j=i+1; j<nodeIds.length; j++) {
         var yarn = db.edges({
@@ -407,7 +407,8 @@ window.learning_threads = (function () {
     prepSave_ltdb:prepSave_ltdb,
     addData:addData,
     prepGraphForExport:prepGraphForExport,
-    masterTitle:masterTitle
+    masterTitle:masterTitle,
+    getInclusiveEdges:getInclusiveEdges
   };
 
 }());

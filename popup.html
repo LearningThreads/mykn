@@ -45,59 +45,15 @@ Policy documentation[1] for details and explanation.
 
   <div style="white-space:nowrap;">
     <form name="myForm">
-      <!-- button to add a new thread -->
-      <button id="newThreadButton"
-              class="btn btn-primary btn-xs"
-              tabindex="2"
-              data-toggle="modal"
-              data-target="#newThreadButtonModal">
-        <i class="fa fa-plus-circle"></i> New
-      </button>
 
       <!-- selector for current thread -->
       <!--<label for="threadSelect"></label>-->
       <!--<select name="threadSelect"-->
-              <!--id="threadSelect"-->
-              <!--ng-options="thread.title for thread in getThreads() track by thread.___id"-->
-              <!--ng-model="currentThread"-->
-              <!--ng-change="setCurrentStitches()">-->
+      <!--id="threadSelect"-->
+      <!--ng-options="thread.title for thread in getThreads() track by thread.___id"-->
+      <!--ng-model="currentThread"-->
+      <!--ng-change="setCurrentStitches()">-->
       <!--</select>&lt;!&ndash;<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>&ndash;&gt;-->
-
-      <span ng-if="currentThread.title!==getMasterThreadTitle()">
-        <a ng-click="exportGraph(currentThread.___id)">
-          <i class="fa fa-share-square-o icon-action" style="background-color:white; margin-left:5px;"></i>
-        </a>
-        <a ng-click="removeThread(currentThread.___id)">
-          <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:5px;"></i>
-        </a>
-      </span>
-
-      <span ng-if="visualViewFlag">
-        <a ng-click="viewList(currentThread.___id)">
-          <i class="fa fa-list icon-action" style="background-color:white; margin-left:5px;"></i>
-        </a>
-      </span>
-
-      <span ng-if="!visualViewFlag">
-        <a ng-click="viewGraph(currentThread.___id)" id="visualViewButton">
-          <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
-        </a>
-      </span>
-
-      <span ng-if="currentThread.title===getMasterThreadTitle()">
-        <a ng-click="printBookmarks()">
-          <i class="fa fa-bookmark icon-action" style="background-color:white; margin-left:5px;"></i>
-        </a>
-      </span>
-
-      <span class="spacer-right-70"></span>
-
-      <!-- button to add stitch to thread -->
-      <button class="btn btn-primary btn-xs rightify"
-              tabindex="1"
-              ng-click="addStitch(currentThread.___id)">
-        <i class="fa fa-bookmark"></i> Add
-      </button>
 
     </form>
   </div>
@@ -168,14 +124,29 @@ Policy documentation[1] for details and explanation.
 
   <hr>
 
+  <!-- -------------------------------------- -->
+  <!-- Container for the threads and stitches -->
+  <!-- -------------------------------------- -->
   <div class="container-fluid" style="padding-bottom:20px;">
-    <!--<p class="section-header">Stitches-->
-    <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
-    <!--</p>-->
     <div class="row" style="width:600px;">
 
       <!-- Threads -->
       <div class="col-xs-3 row-panel" style="background-color:#f3f3f3;">
+
+        <div class="button-banner">
+          <form name="myForm">
+            <!-- Button to add a new thread -->
+            <!-- Opens a modal window for the user to name the thread -->
+            <button id="newThreadButton"
+                    class="btn btn-primary btn-xs"
+                    tabindex="2"
+                    data-toggle="modal"
+                    data-target="#newThreadButtonModal">
+              <i class="fa fa-plus-circle"></i> New
+            </button>
+          </form>
+        </div>
+
         <div id="threadList">
           <div class=""
                ng-repeat="thread in getThreads() track by $index">
@@ -187,9 +158,49 @@ Policy documentation[1] for details and explanation.
         </div>
       </div>
 
-      <!-- Stitches List View-->
-      <div ng-if="!visualViewFlag" class="col-xs-9 row-panel" style="padding-left:0;">
-        <div id="stitches">
+      <!-- Stitches -->
+      <div class="col-xs-9 row-panel" style="padding-left:0;">
+
+        <div class="button-banner">
+          <span ng-if="currentThread.title!==getMasterThreadTitle()">
+            <a ng-click="exportGraph(currentThread.___id)">
+              <i class="fa fa-share-square-o icon-action" style="background-color:white; margin-left:5px;"></i>
+            </a>
+            <a ng-click="removeThread(currentThread.___id)">
+              <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:5px;"></i>
+            </a>
+          </span>
+
+          <span ng-if="visualViewFlag">
+            <a ng-click="viewList(currentThread.___id)">
+              <i class="fa fa-list icon-action" style="background-color:white; margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span ng-if="!visualViewFlag">
+            <a ng-click="viewGraph(currentThread.___id)" id="visualViewButton">
+              <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span ng-if="currentThread.title===getMasterThreadTitle()">
+            <a ng-click="printBookmarks()">
+              <i class="fa fa-bookmark icon-action" style="background-color:white; margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span class="spacer-right-70"></span>
+
+          <!-- button to add stitch to thread -->
+          <button class="btn btn-primary btn-xs rightify"
+                  tabindex="1"
+                  ng-click="addStitch(currentThread.___id)">
+            <i class="fa fa-bookmark"></i> Add
+          </button>
+        </div>
+
+        <!-- List View -->
+        <div ng-if="!visualViewFlag" id="stitches">
           <div ng-if="stitchesExist">
             <div class="label stitch-row"
                  style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
@@ -210,11 +221,12 @@ Policy documentation[1] for details and explanation.
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Stitches Visual View -->
-      <div ng-if="visualViewFlag" class="col-xs-9 row-panel" style="padding-left:0;">
-        <div id="visualView"></div>
+        <!-- Visual View -->
+        <div ng-if="visualViewFlag">
+          <div id="visualView"></div>
+        </div>
+
       </div>
 
     </div>
