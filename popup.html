@@ -25,6 +25,8 @@ Policy documentation[1] for details and explanation.
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
   <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo minify -->
 
+  <script src="lib/d3/d3.min.js" charset="utf-8"></script>
+
 </head>
 
 <base target="_blank" />
@@ -53,13 +55,13 @@ Policy documentation[1] for details and explanation.
       </button>
 
       <!-- selector for current thread -->
-      <label for="threadSelect"></label>
-      <select name="threadSelect"
-              id="threadSelect"
-              ng-options="thread.title for thread in getThreads() track by thread.___id"
-              ng-model="currentThread"
-              ng-change="setCurrentStitches()">
-      </select><!--<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>-->
+      <!--<label for="threadSelect"></label>-->
+      <!--<select name="threadSelect"-->
+              <!--id="threadSelect"-->
+              <!--ng-options="thread.title for thread in getThreads() track by thread.___id"-->
+              <!--ng-model="currentThread"-->
+              <!--ng-change="setCurrentStitches()">-->
+      <!--</select>&lt;!&ndash;<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>&ndash;&gt;-->
 
       <span ng-if="currentThread.title!==getMasterThreadTitle()">
         <a ng-click="exportGraph(currentThread.___id)">
@@ -70,8 +72,14 @@ Policy documentation[1] for details and explanation.
         </a>
       </span>
 
-      <span ng-if="currentThread.title===getMasterThreadTitle()">
-        <a ng-click="viewGraph(currentThread.___id)">
+      <span ng-if="visualViewFlag">
+        <a ng-click="viewList(currentThread.___id)">
+          <i class="fa fa-list icon-action" style="background-color:white; margin-left:5px;"></i>
+        </a>
+      </span>
+
+      <span ng-if="!visualViewFlag">
+        <a ng-click="viewGraph(currentThread.___id)" id="visualViewButton">
           <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
         </a>
       </span>
@@ -160,12 +168,14 @@ Policy documentation[1] for details and explanation.
 
   <hr>
 
-  <div class="container-fluid">
+  <div class="container-fluid" style="padding-bottom:20px;">
     <!--<p class="section-header">Stitches-->
     <!--<a class="icon-action" ng-click="addStitch(currentThread.___id)"><i class="fa fa-plus-circle"></i> add stitch</a>-->
     <!--</p>-->
-    <div class="row row-main" style="width:600px;">
-      <div class="col-xs-3 row-panel" style="background-color:#f3f3f3;overflow:scroll;height:400px;">
+    <div class="row" style="width:600px;">
+
+      <!-- Threads -->
+      <div class="col-xs-3 row-panel" style="background-color:#f3f3f3;">
         <div id="threadList">
           <div class=""
                ng-repeat="thread in getThreads() track by $index">
@@ -176,7 +186,9 @@ Policy documentation[1] for details and explanation.
           </div>
         </div>
       </div>
-      <div class="col-xs-9 row-panel" style="padding-left:0;overflow:scroll;height:400px;">
+
+      <!-- Stitches List View-->
+      <div ng-if="!visualViewFlag" class="col-xs-9 row-panel" style="padding-left:0;">
         <div id="stitches">
           <div ng-if="stitchesExist">
             <div class="label stitch-row"
@@ -199,10 +211,22 @@ Policy documentation[1] for details and explanation.
           </div>
         </div>
       </div>
+
+      <!-- Stitches Visual View -->
+      <div ng-if="visualViewFlag" class="col-xs-9 row-panel" style="padding-left:0;">
+        <div id="visualView"></div>
+      </div>
+
     </div>
   </div>
 
-  <hr>
+  <!--<hr>-->
+
+  <label id="emailFeedback">
+    <a ng-click="sendEmailFeedback()">Email us</a> with your feedback!
+    <a ng-click="sendEmailFeedback()" style="color:darkred">Report a bug.</a>
+  </label>
+
 
   <label class="permissionCheck">
     Send anonymous tracking data. <a href="http://www.learningthreads.co/?page_id=1678">Learn why this is important. </a> <input type="checkbox" id="analyticsPermission" />
@@ -231,6 +255,8 @@ Policy documentation[1] for details and explanation.
 <!--<script src="app/services/graphLayouts.js"></script>-->
 <script src="app/controllers/controllers.js"></script>
 <script src="app/directives/dragEffects.js"></script>
+
+<script src="js/forcelayouttest.js"></script>
 
 </body>
 

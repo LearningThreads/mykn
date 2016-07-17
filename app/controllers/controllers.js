@@ -21,7 +21,6 @@ angular.module('popup')
         });
       }
 
-
       // Variables defined on this scope
       $scope.db = undefined;
       $scope.title = "MYKN - My Knowledge Network";
@@ -34,6 +33,7 @@ angular.module('popup')
       $scope.newThreadTitle = "";
       $scope.newThreadDescription = "";
       $scope.stitchesExist = false;
+      $scope.visualViewFlag = false;
       $scope.getMasterThreadTitle = function() {return masterThreadName;};
 
       // Set the current tab so we know what to add if a stitch is added
@@ -379,13 +379,23 @@ angular.module('popup')
         })
       };
 
+      $scope.viewList = function viewList() {
+        $scope.visualViewFlag = false;
+      };
+
       $scope.viewGraph = function viewGraph(threadId) {
-        chrome.windows.create({
-          url: 'graphViz.html',
-          type: 'panel',
-          width: 640,
-          height: 480
-        });
+        //$scope.$apply(function() {
+          $scope.visualViewFlag = true;
+        buildSVG();
+        console.log('Here we are');
+        //});
+        //chrome.windows.create({
+        //  url: 'graphViz.html',
+        //  type: 'panel',
+        //  width: 640,
+        //  height: 480
+        //});
+
         //var fL = forceLayout;
         //fL(threadId);
       };
@@ -426,6 +436,11 @@ angular.module('popup')
           // Use the title and url to add a stitch
           $scope.addStitchObj(bookmarkNode);
         }
+      }
+
+      $scope.sendEmailFeedback = function sendEmailFeedback() {
+        console.log(chrome.extension.getBackgroundPage());
+        chrome.extension.getBackgroundPage().sendEmail("contact@learningthreads.co");
       }
     }
   ]);

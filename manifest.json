@@ -1,7 +1,7 @@
 {
   "name": "My Knowledge Network",
   "short_name": "MYKN",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
@@ -23,6 +23,10 @@
       "default_title": "MYKN",
       "default_icon": "img/logo/48x48.png",
       "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": true
   },
   "options_page": "options.html",
   "manifest_version": 2,

@@ -1,24 +1,35 @@
 
 function buildSVG() {
-  chrome.storage.local.get(["ltdb"], function (obj) {
+  chrome.storage.local.get(["ltdb", "currentThreadName"], function (obj) {
+
+    // Re-build the learning threads database with the database data
     var db = window.learning_threads.build_ltdb(obj.ltdb);
-    nodes = db.nodes().get();
-    var nodeIds = [];
-    for (var i = 0; i < nodes.length; i++) {
-      nodeIds.push(nodes[i].___id);
-    }
+
+    // Grab the nodes associated with the currently selected thread
+    var nodeIds = db.graphs({title:obj.currentThreadName}).first().nodes;
+    var nodess = db.nodes(nodeIds).get();
+
+    //console.log(nodeIds);
+    //console.log(nodess);
+
+    //nodes = db.nodes().get();
+    //var nodeIds = [];
+    //for (var i = 0; i < nodes.length; i++) {
+    //  nodeIds.push(nodes[i].___id);
+    //}
+
     edges = db.edges().get();
     for (var j = 0; j < edges.length; j++) {
       edges[j].source = nodeIds.indexOf(edges[j].from);
       edges[j].target = nodeIds.indexOf(edges[j].to);
     }
     var dataset = {
-      nodes: nodes,
+      nodes: nodess,
       edges: edges
     };
 
-    var width = 620;
-    var height = 440;
+    var width = 450; // 620;
+    var height = 400; // 440;
 
     var force = d3.layout.force()
       .nodes(dataset.nodes)
@@ -27,7 +38,8 @@ function buildSVG() {
       .linkDistance([100])
       .charge([-200]);
 
-    var svg = d3.select('body').append('svg')
+    //var svg = d3.select('body').append('svg')
+    var svg = d3.select('#visualView').append('svg')
       .attr('width', width)
       .attr('height', height);
 
@@ -103,5 +115,12 @@ chrome.storage.onChanged.addListener(function(changes,namespace) {
   buildSVG();
 });
 
+//document.addEventListener('load', function() {
+//  document.getElementById('visualViewButton').addEventListener("click", function() {
+//    console.log("test this too");
+//    buildSVG();
+//  });
+//});
+
 // Do this once upon load.
-buildSVG();
+//buildSVG();
