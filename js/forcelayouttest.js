@@ -10,12 +10,13 @@ function buildSVG() {
     var nodess = db.nodes(nodeIds).get();
 
     // Grab the edges associated with the currently selected thread
-    var edgeIds = window.learning_threads.getInclusiveEdges(db, nodeIds);
+    edgeIds = [];
+    var edgeIds = window.learning_threads.getInclusiveEdges(db, nodeIds); //<-- HERE IS THE PROBLEM! FIX ME!!!!
     var edgess = db.edges(edgeIds).get();
     for (var j = 0; j < edgess.length; j++) {
-      edgess[j].source = nodeIds.indexOf(edgess[j].from);
-      edgess[j].target = nodeIds.indexOf(edgess[j].to);
-      edgess[j].weight = 1;
+      edgess[j].source = nodeIds.indexOf(edgess[j].from);  // "source" is the field needed by D3
+      edgess[j].target = nodeIds.indexOf(edgess[j].to);    // "target" is the field needed by D3
+      edgess[j].weight = 1;  // this was a suggested solution to a possible problem
     }
 
     // Define the graph as the dataset of nodes and edges

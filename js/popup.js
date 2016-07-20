@@ -1,40 +1,40 @@
 
-function addStitchListeners() {
-  document.getElementById('stitches').addEventListener('dragstart', function(ev) {
-    event.dataTransfer.setData("Text", ev.target.id);
-    //var img = new Image();
-    //img.src = 'img/logo/16x16.png';  // @todo maybe a gif works better
-    //ev.dataTransfer.setDragImage(img, 16, 16);
-  });
-
-  //// While dragging, change the cursur to dragging
-  //document.getElementById('stitches').addEventListener("drag", function(event) {
-  //  event.target.style.cursor = 'grabbing';
-  //  //document.getElementById("demo").style.color = "red";
-  //});
-
-  document.getElementById('stitches').addEventListener("dragover", function(event) {
-    if ($(event.target).hasClass("droptarget")) {
-      event.preventDefault();
-      event.dataTransfer.dropEffect = 'link';
-    }
-  });
-
-  document.getElementById('stitches').addEventListener("drop", function(event) {
-    event.preventDefault();
-    if ( $(event.target).hasClass("droptarget") ) {
-      console.log('dropped');
-      //document.getElementById("demo").style.color = "";
-      //event.target.style.border = "";
-      var data = event.dataTransfer.getData("Text");
-      console.log(data);
-      console.log(event.target.id);
-      //event.target.appendChild(document.getElementById(data));
-      //createYarn(data, event.target.id);
-      console.log(window.angular.element($0).scope());
-    }
-  });
-}
+//function addStitchListeners() {
+//  document.getElementById('stitches').addEventListener('dragstart', function(ev) {
+//    event.dataTransfer.setData("Text", ev.target.id);
+//    //var img = new Image();
+//    //img.src = 'img/logo/16x16.png';  // @todo maybe a gif works better
+//    //ev.dataTransfer.setDragImage(img, 16, 16);
+//  });
+//
+//  //// While dragging, change the cursur to dragging
+//  //document.getElementById('stitches').addEventListener("drag", function(event) {
+//  //  event.target.style.cursor = 'grabbing';
+//  //  //document.getElementById("demo").style.color = "red";
+//  //});
+//
+//  document.getElementById('stitches').addEventListener("dragover", function(event) {
+//    if ($(event.target).hasClass("droptarget")) {
+//      event.preventDefault();
+//      event.dataTransfer.dropEffect = 'link';
+//    }
+//  });
+//
+//  document.getElementById('stitches').addEventListener("drop", function(event) {
+//    event.preventDefault();
+//    if ( $(event.target).hasClass("droptarget") ) {
+//      console.log('dropped');
+//      //document.getElementById("demo").style.color = "";
+//      //event.target.style.border = "";
+//      var data = event.dataTransfer.getData("Text");
+//      console.log(data);
+//      console.log(event.target.id);
+//      //event.target.appendChild(document.getElementById(data));
+//      //createYarn(data, event.target.id);
+//      console.log(window.angular.element($0).scope());
+//    }
+//  });
+//}
 
 
 var service, tracker;

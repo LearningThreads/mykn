@@ -364,20 +364,28 @@ window.learning_threads = (function () {
   // Get all of the edgeIDs of edges that exist in the master database that are
   // inclusive based on an array of node IDs
   function getInclusiveEdges(db, nodeIds) {
-    var edges = [];
+    var edgeIDs = [];
+    var edges = db.edges().get(); // grab all of the edges (this is just one database call)
     for (var i=0; i<nodeIds.length; i++) {
       for (var j=i+1; j<nodeIds.length; j++) {
-        var yarn = db.edges({
-            from:nodeIds[i],
-            to:nodeIds[j]
-          }).first() || db.edges({
-            from:nodeIds[j],
-            to:nodeIds[i]
-          }).first();
-        if (yarn) edges.push(yarn.___id);
+        for (var k=0; k<edges.length; k++) {
+          var e = edges[k];
+          if ((e.from === nodeIds[i] && e.to === nodeIds[j]) ||
+            (e.from === nodeIds[j] && e.to === nodeIds[i])) {
+            edgeIDs.push(e.___id);
+          }
+        }
+        //var yarn = db.edges({
+        //    from:nodeIds[i],
+        //    to:nodeIds[j]
+        //  }).first() || db.edges({
+        //    from:nodeIds[j],
+        //    to:nodeIds[i]
+        //  }).first();
+        //if (yarn) edgeIDs.push(yarn.___id);
       }
     }
-    return edges;
+    return edgeIDs;
   }
 
 
