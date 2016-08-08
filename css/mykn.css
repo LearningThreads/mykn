@@ -147,6 +147,7 @@ hr {
 }
 
 .spacer-right-70 { margin-right: 70px; }
+.spacer-top-10 {padding-top: 5px;}
 
 .row-panel {
   overflow:scroll;
@@ -155,7 +156,59 @@ hr {
 
 .button-banner {
   white-space:nowrap;
+  height:32px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
+
+.button-banner-threads {
+  background-color: #261a3b;
+}
+
+.banner-stitches-color-bg {
+  background-color: white;
+}
+
+.thread-panel {
+  padding-left:2px;
+}
+
+.thread-panel-color-bg {
+  background-color:#f3f3f3;
+}
+
+.current-thread-yes {
+  font-weight: 600;
+}
+
+.current-thread-no {
+  font-weight: 300;
+}
+
+
+
+/*!* Some basic styling to notify users*/
+   /*about the tooltips*!*/
+/*.tooltip {*/
+  /*color: #900;*/
+  /*text-decoration: none;*/
+/*}*/
+/*.tooltip:hover {*/
+  /*color: red;*/
+  /*position: relative;*/
+/*}*/
+/*!* Tooltip on Top *!*/
+/*.tooltip-top[data-tooltip]:hover:after {*/
+  /*content: attr(data-tooltip);*/
+  /*padding: 4px 8px;*/
+  /*position: absolute;*/
+  /*left: 0;*/
+  /*bottom: 100%;*/
+  /*white-space: nowrap;*/
+  /*z-index: 20px;*/
+  /*background-color: #000;*/
+  /*color: #fff;*/
+/*}*/
 
 /*.row {*/
   /*overflow: hidden;*/

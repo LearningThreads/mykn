@@ -1,0 +1,179 @@
+
+.brand {
+  color: #543156;
+}
+.brand1 {
+  color: #4BAAD3;
+}
+.brand2 {
+  color: #2D677F;
+}
+.brand3 {
+  color: #173340;
+}
+.brand4 {
+  color: #748E99;
+}
+.brand5 {
+  color: #CC344C;
+}
+.bg-brand {
+  background-color: #543156;
+}
+
+.bg-brand:active {
+  background-color: #543156;
+}
+
+.bg-brand:hover {
+  background-color: #543156;
+}
+
+.bg-brand:focus {
+  background-color: #543156;
+  border-color: #543156;
+}
+
+.bg-brand1 {
+  background-color: #4BAAD3;
+}
+.bg-brand2 {
+  background-color: #2D677F;
+}
+.bg-brand3 {
+  background-color: #173340;
+}
+.bg-brand4 {
+  background-color: #748E99;
+}
+.bg-brand5 {
+  background-color: #CC344C;
+}
+.pink {
+  color: #FF748A;
+}
+.navy {
+  color: #001F3F;
+}
+.blue {
+  color: #0074D9;
+}
+.aqua {
+  color: #7FDBFF;
+}
+.teal {
+  color: #39CCCC;
+}
+.olive {
+  color: #3D9970;
+}
+.green {
+  color: #2ECC40;
+}
+.lime {
+  color: #01FF70;
+}
+.yellow {
+  color: #FFDC00;
+}
+.orange {
+  color: #FF851B;
+}
+.red {
+  color: #FF4136;
+}
+.fuchsia {
+  color: #F012BE;
+}
+.purple {
+  color: #B10DC9;
+}
+.maroon {
+  color: #85144B;
+}
+.white {
+  color: #FFFFFF;
+}
+.silver {
+  color: #DDDDDD;
+}
+.gray {
+  color: #AAAAAA;
+}
+.black {
+  color: #111111;
+}
+.bg-navy {
+  background-color: #001F3F;
+}
+.bg-blue {
+  background-color: #0074D9;
+}
+.bg-aqua {
+  background-color: #7FDBFF;
+}
+.bg-teal {
+  background-color: #39CCCC;
+}
+.bg-olive {
+  background-color: #3D9970;
+}
+.bg-green {
+  background-color: #2ECC40;
+}
+.bg-lime {
+  background-color: #01FF70;
+}
+.bg-yellow {
+  background-color: #FFDC00;
+}
+.bg-orange {
+  background-color: #FF851B;
+}
+.bg-red {
+  background-color: #FF4136;
+}
+.bg-pink {
+  background-color: #FF748A;
+}
+.bg-fuchsia {
+  background-color: #F012BE;
+}
+.bg-purple {
+  background-color: #B10DC9;
+}
+.bg-maroon {
+  background-color: #85144B;
+}
+.bg-white {
+  background-color: #FFFFFF;
+}
+.bg-gray {
+  background-color: #AAAAAA;
+}
+.bg-silver {
+  background-color: #DDDDDD;
+}
+.bg-black {
+  background-color: #111111;
+}
+.color-bold {
+  background: #3F1012;
+  color: #000;
+}
+.color-strong {
+  background: #742023;
+  color: #000;
+}
+.color-highlight {
+  background: #BF4449;
+  color: #000;
+}
+.color-shade {
+  background: #7E86C0;
+  color: #000;
+}
+.color-page-background {
+  background: #808698;
+  color: #000;
+}

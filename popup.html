@@ -24,6 +24,7 @@ Policy documentation[1] for details and explanation.
   <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen"> <!-- @todo: minify -->
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
   <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo minify -->
+  <link type="text/css" rel="stylesheet" href="css/colors.css" media="screen">  <!-- @todo minify -->
 
   <script src="lib/d3/d3.min.js" charset="utf-8"></script>
 
@@ -41,22 +42,7 @@ Policy documentation[1] for details and explanation.
   <!--<i class="fa fa-search input-icon"></i>-->
   <!--</div>-->
 
-  <hr>
-
-  <div style="white-space:nowrap;">
-    <form name="myForm">
-
-      <!-- selector for current thread -->
-      <!--<label for="threadSelect"></label>-->
-      <!--<select name="threadSelect"-->
-      <!--id="threadSelect"-->
-      <!--ng-options="thread.title for thread in getThreads() track by thread.___id"-->
-      <!--ng-model="currentThread"-->
-      <!--ng-change="setCurrentStitches()">-->
-      <!--</select>&lt;!&ndash;<a class="icon-action" ng-click="addThread()"><i class="fa fa-plus-circle"></i> new thread</a>&ndash;&gt;-->
-
-    </form>
-  </div>
+  <!--<hr>-->
 
   <!-- Modal element to verify a user action @todo make this a directive -->
   <div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel">
@@ -122,34 +108,124 @@ Policy documentation[1] for details and explanation.
     </div>
   </div>
 
-  <hr>
+  <!--<hr>-->
 
   <!-- -------------------------------------- -->
   <!-- Container for the threads and stitches -->
   <!-- -------------------------------------- -->
   <div class="container-fluid" style="padding-bottom:20px;">
+
+    <!-- Banner -->
+    <div class="row" style="width:600px;">
+      <div class="col-xs-3 thread-panel-color-bg" style="padding-left:0">
+        <div class="button-banner">
+
+          <!-- Button to add a new thread -->
+          <!-- Opens a modal window for the user to name the thread -->
+          <label for="newThreadButton">
+            <i class="fa fa-plus-circle brand thread-panel-color-bg icon-action"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Create New Thread"
+               style="margin-left:5px;">
+            </i>
+          </label>
+          <button id="newThreadButton"
+                  tabindex="2"
+                  style="visibility:hidden;"
+                  data-toggle="modal"
+                  data-target="#newThreadButtonModal">
+          </button>
+
+          <!-- Button to import thread from file -->
+          <label for="fileForImport">
+            <i class="fa fa-cloud-download icon-action brand thread-panel-color-bg"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Import from file."
+               style="margin-left:5px;">
+            </i>
+          </label>
+          <input id="fileForImport" style="visibility:hidden;" type="file">
+
+        </div>
+        <hr>
+      </div>
+      <div class="col-xs-9 banner-stitches-color-bg" style="padding-left:0;">
+        <div class="button-banner">
+
+          <!-- Button to export thread to file -->
+          <a data-toggle="tooltip"
+             data-placement="bottom"
+             title="Export to file."
+             ng-click="exportGraph(currentThread.___id)">
+            <i class="fa fa-cloud-upload icon-action brand banner-stitches-color-bg" style="margin-left:5px;"></i>
+          </a>
+
+          <span ng-show="visualViewFlag">
+            <!-- Button to switch the view to a list -->
+            <a data-toggle="tooltip"
+               data-placement="bottom"
+               title="Switch to list view."
+               ng-click="viewList(currentThread.___id)">
+              <i class="fa fa-list icon-action brand banner-stitches-color-bg" style="margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span ng-show="!visualViewFlag">
+            <!-- Button to switch the view to a graph -->
+            <a data-toggle="tooltip"
+               data-placement="bottom"
+               title="Switch to graph view."
+               ng-click="viewGraph(currentThread.___id)" id="visualViewButton">
+              <i class="fa fa-share-alt icon-action brand banner-stitches-color-bg" style="margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span ng-show="currentThread.title!==getMasterThreadTitle()">
+            <!-- Button to remove thread -->
+            <a data-toggle="tooltip"
+               data-placement="bottom"
+               title="Delete thread."
+               ng-click="removeThread(currentThread.___id)">
+              <i class="fa fa-trash-o icon-action brand banner-stitches-color-bg" style="padding-left:5px;"></i>
+            </a>
+          </span>
+
+          <!-- @todo need to add a watcher to add the tooltip() function to html elements that are switched on/off -->
+
+          <span ng-show="currentThread.title===getMasterThreadTitle()">
+            <!-- Button to import from Chrome bookmarks -->
+            <a data-toggle="tooltip"
+               data-placement="bottom"
+               title="Import Chrome bookmarks."
+               ng-click="printBookmarks()">
+              <i class="fa fa-download icon-action brand banner-stitches-color-bg" style=" margin-left:5px;"></i>
+            </a>
+          </span>
+
+          <span class="spacer-right-70"></span>
+
+          <!-- button to add stitch to thread -->
+          <button class="btn btn-primary btn-xs rightify bg-brand"
+                  tabindex="1"
+                  ng-click="addStitch(currentThread.___id)">
+            <i class="fa fa-star"></i> Add to Thread
+          </button>
+        </div>
+        <hr>
+      </div>
+
+    </div>
+
     <div class="row" style="width:600px;">
 
       <!-- Threads -->
-      <div class="col-xs-3 row-panel" style="background-color:#f3f3f3;">
-
-        <div class="button-banner">
-          <form name="myForm">
-            <!-- Button to add a new thread -->
-            <!-- Opens a modal window for the user to name the thread -->
-            <button id="newThreadButton"
-                    class="btn btn-primary btn-xs"
-                    tabindex="2"
-                    data-toggle="modal"
-                    data-target="#newThreadButtonModal">
-              <i class="fa fa-plus-circle"></i> New
-            </button>
-          </form>
-        </div>
-
+      <div class="col-xs-3 row-panel thread-panel thread-panel-color-bg">
         <div id="threadList">
           <div class=""
-               ng-repeat="thread in getThreads() track by $index">
+               ng-repeat="thread in getThreads() track by $index"
+               ng-class="'current-thread-' + isCurrentThread(thread.title)">
             <a class="a-thread droptarget isthread thread-row"
                ng-click="selectThread(thread)"
                id="thread-{{thread.___id}}"
@@ -160,44 +236,6 @@ Policy documentation[1] for details and explanation.
 
       <!-- Stitches -->
       <div class="col-xs-9 row-panel" style="padding-left:0;">
-
-        <div class="button-banner">
-          <span ng-if="currentThread.title!==getMasterThreadTitle()">
-            <a ng-click="exportGraph(currentThread.___id)">
-              <i class="fa fa-share-square-o icon-action" style="background-color:white; margin-left:5px;"></i>
-            </a>
-            <a ng-click="removeThread(currentThread.___id)">
-              <i class="fa fa-trash-o icon-action" style="background-color:white;padding-left:5px;"></i>
-            </a>
-          </span>
-
-          <span ng-if="visualViewFlag">
-            <a ng-click="viewList(currentThread.___id)">
-              <i class="fa fa-list icon-action" style="background-color:white; margin-left:5px;"></i>
-            </a>
-          </span>
-
-          <span ng-if="!visualViewFlag">
-            <a ng-click="viewGraph(currentThread.___id)" id="visualViewButton">
-              <i class="fa fa-eye icon-action" style="background-color:white; margin-left:5px;"></i>
-            </a>
-          </span>
-
-          <span ng-if="currentThread.title===getMasterThreadTitle()">
-            <a ng-click="printBookmarks()">
-              <i class="fa fa-bookmark icon-action" style="background-color:white; margin-left:5px;"></i>
-            </a>
-          </span>
-
-          <span class="spacer-right-70"></span>
-
-          <!-- button to add stitch to thread -->
-          <button class="btn btn-primary btn-xs rightify"
-                  tabindex="1"
-                  ng-click="addStitch(currentThread.___id)">
-            <i class="fa fa-bookmark"></i> Add
-          </button>
-        </div>
 
         <!-- List View -->
         <div ng-if="!visualViewFlag" id="stitches">

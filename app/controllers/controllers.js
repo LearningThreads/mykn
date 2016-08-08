@@ -70,6 +70,14 @@ angular.module('popup')
         $scope.setCurrentStitches();
       };
 
+      $scope.isCurrentThread = function isCurrentThread(threadName) {
+        if ($scope.currentThreadName === threadName) {
+          return "yes";
+        } else {
+          return "no";
+        }
+      };
+
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
         chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
