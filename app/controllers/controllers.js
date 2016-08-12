@@ -446,7 +446,6 @@ angular.module('popup')
       }
 
       $scope.sendEmailFeedback = function sendEmailFeedback() {
-        console.log(chrome.extension.getBackgroundPage());
         chrome.extension.getBackgroundPage().sendEmail("contact@learningthreads.co");
       }
     }

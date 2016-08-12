@@ -50,7 +50,7 @@ window.learning_threads = (function () {
   function applyIdMapping(ids, map) {
     for (var s=0; s<ids.length; s++) {
       var newId = map.newIds[map.origIds.indexOf(ids[s])];
-      if (newId === undefined) throw new Error('Your database has been corrupted.');
+      if (newId === undefined) throw new Error('Your database has been corrupted. Could not find id ' + ids[s]);
       ids[s] = newId;
     }
     return ids;
@@ -398,7 +398,8 @@ window.learning_threads = (function () {
 
     // Ok, so right now we're not saving the edges per graph, but
     // we still need a way to export the right edges.
-    var edgeData = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
+    var edgeIDs = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
+    var edgeData = db.edges(edgeIDs).get();
 
     return {
       nodes: nodeData,

@@ -109,7 +109,9 @@ function importNetwork(file) {
         window.learning_threads.addData(db, dataToAdd);
         chrome.storage.local.set({
           "ltdb":window.learning_threads.prepSave_ltdb()(db)
-        }, function() {});
+        }, function() {
+          window.close();
+        });
       });
 
     } else {
