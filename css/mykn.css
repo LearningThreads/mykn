@@ -43,6 +43,7 @@ ul ul {
 
 .label {
   -webkit-transition: all 150ms;
+  padding: 0.2em 0.6em 0.2em 0;
   color: black;
   display: block;
   -webkit-padding-start: 20px;
@@ -63,6 +64,19 @@ hr {
   cursor: pointer;
   /*padding-left: 10px;*/
   font-size: medium;
+}
+
+.icon-pointer {
+  cursor: pointer;
+}
+
+.icon-medium {
+  font-size: medium;
+}
+
+.icon-stitch-action {
+  padding-right: 5px;
+  font-size: small;
 }
 
 .section-header {
@@ -118,9 +132,14 @@ hr {
   /*margin-left: 5px;*/
 }
 
+.rightify-scroll {
+  position: absolute;
+  right:20px;
+}
+
 .stitch-row {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  /*padding-top: 5px;*/
+  /*padding-bottom: 5px;*/
   margin-left: 5px;
   white-space: nowrap;
 }
@@ -149,10 +168,27 @@ hr {
 .spacer-right-70 { margin-right: 70px; }
 .spacer-top-10 {padding-top: 5px;}
 
+.spacer-top-xs {margin-top: 5px;}
+.spacer-top-sm {margin-top: 10px;}
+.spacer-top-md {margin-top: 20px;}
+
 .row-panel {
   overflow:scroll;
   height:400px;
 }
+
+.transient-menu {
+  visibility: hidden;
+}
+
+.stitch-row:hover .transient-menu {
+  visibility: visible;
+}
+
+/*::-webkit-scrollbar {*/
+  /*!*display: none;*!*/
+  /*visibility: hidden;*/
+/*}*/
 
 .button-banner {
   white-space:nowrap;
@@ -185,6 +221,11 @@ hr {
   font-weight: 300;
 }
 
+.input-long {
+  width: 400px;
+  padding-left: 5px;
+  margin: 5px;
+}
 
 
 /*!* Some basic styling to notify users*/

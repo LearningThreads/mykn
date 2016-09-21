@@ -164,7 +164,21 @@ gulp.task('library', function() {
     .pipe(notify({ message: 'Library task complete' }));
 });
 
-// Top level files
+// HTML Template files
+gulp.task('htmlTemplate', function() {
+  return gulp.src([
+      src+'/html/**/*.html'
+    ])
+    .pipe(cache())
+    .pipe(htmlmin({
+      removeComments: true,
+      collapseWhitespace: true
+    }))
+    .pipe(gulp.dest(dest + '/html'))
+    .pipe(notify({message: 'HTML template task complete'}));
+});
+
+// Top level html files
 gulp.task('html', function() {
   return gulp.src([
     src+'*.html'
@@ -175,7 +189,7 @@ gulp.task('html', function() {
       collapseWhitespace: true
     }))
     .pipe(gulp.dest(dest))
-    .pipe(notify({message: 'Top level task complete'}));
+    .pipe(notify({message: 'Top level html task complete'}));
 });
 
 // Top level files
@@ -192,7 +206,7 @@ gulp.task('top', function() {
 
 // Default task
 // ------------
-gulp.task('default', ['styles', 'scripts', 'images', 'library', 'fonts', 'app', 'top', 'html']);
+gulp.task('default', ['styles', 'scripts', 'images', 'library', 'fonts', 'app', 'top', 'html', 'htmlTemplate']);
 
  // Development task
  // ----------------
@@ -201,6 +215,7 @@ gulp.task('dev', [], function() {
   gulp.watch(src + '/js/**/*.js', ['scripts']);
   gulp.watch(src + '/img/**/*', ['images']);
   gulp.watch(src + '*.html', ['html']);
+  gulp.watch(src + '/html/**/*.html', ['htmlTemplate']);
   gulp.watch(src + '*.*', ['top']);
   gulp.watch(src + '/app/**/*.js', ['app']);
 });

@@ -5,11 +5,11 @@ This page is shown when the extension button is clicked, because the
 "browser_action" field in manifest.json contains the "default_popup" key with
 value "popup.html".
 
-It has been modified to be an AngularJS app.
+It is an AngularJS app.
 
-JavaScript and HTML must be in separate files: see our Content Security
-Policy documentation[1] for details and explanation.
- [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+JavaScript and HTML must be in separate files due to Google Chrome's Content Security
+Policy documentation.
+  - https://developer.chrome.com/extensions/contentSecurityPolicy
 -->
 
 <html ng-app=popup ng-csp style="height:400px;">
@@ -35,132 +35,50 @@ Policy documentation[1] for details and explanation.
 <body style="min-width: 400px; min-height:100px; height: 400px;">
 
 <div ng-controller="MainController">
-  <!--<p class="tinytext-right">With love from <a href="http://www.learningthreads.co" tabindex="-1">{{companyShortName}}</a> #keeplearning </p>-->
 
-  <!--<div class="text-center">-->
-  <!--<input id="search" style="width:90%;" type="text" placeholder="Search My Knowledge Network" tabindex="1"/>-->
-  <!--<i class="fa fa-search input-icon"></i>-->
-  <!--</div>-->
-
-  <!--<hr>-->
-
-  <!-- Modal element to verify a user action @todo make this a directive -->
-  <div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Verify</h4>
-        </div>
-        <div class="modal-body">
-          <!-- Yes and Cancel buttons @todo Need to implement the completeAction functionality -->
-          <button class="btn btn-sm btn-success"
-                  type="button"
-                  ng-click="completeAction(fnc)"
-                  data-dismiss="modal"
-                  data-target="#newThreadButtonModal">Yes</button>
-          <button class="btn btn-sm btn-danger"
-                  data-dismiss="modal"
-                  data-target="#newThreadButtonModal">Cancel</button>
-        </div>
-      </div>
-    </div>
+  <!-- Modal element to verify a user action -->
+  <div verify-modal
+       class="modal fade"
+       id="verifyModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="verifyModalLabel">
   </div>
 
-  <!-- Modal element to specify the thread title @todo make this a directive-->
-  <div class="modal fade" id="newThreadButtonModal" tabindex="-1" role="dialog" aria-labelledby="newThreadButtonModelLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Start New Learning Thread</h4>
-        </div>
-        <div class="modal-body">
-          <form name="newThread" class="validate" target="_blank" novalidate>
-
-            <!-- A title for the new thread -->
-            <label for="threadName">Name:</label>
-            <input id="threadName"
-                   type="text"
-                   name="threadName"
-                   placeholder="New Thread"
-                   ng-model="newThreadTitle"><br>
-
-            <!-- A description for the new thread -->
-            <!--<label for="threadDescription">Description:</label><br>-->
-            <!--<input id="threadDescription"-->
-            <!--type="text"-->
-            <!--name="threadDescription"-->
-            <!--placeholder="Add your description here."-->
-            <!--ng-model="newThreadDescription"><br>-->
-
-            <!-- Add and Cancel buttons -->
-            <button class="btn btn-sm btn-success"
-                    type="button"
-                    ng-click="addThread()"
-                    data-dismiss="modal"
-                    data-target="#newThreadButtonModal">Add</button>
-            <button class="btn btn-sm btn-danger"
-                    data-dismiss="modal"
-                    data-target="#newThreadButtonModal">Cancel</button>
-
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal element to show help info @todo make this a directive-->
-    <div class="modal fade" id="helpWindowModal" tabindex="-1" role="dialog" aria-labelledby="helpWindowModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">My Knowledge Network User Guide</h4>
-          </div>
-          <div class="modal-body">
-
-            <h4>What is a Thread?</h4>
-            <p>A thread is a collection of resources.</p>
-
-            <h4>What is a Resource?</h4>
-            <p>A resource is a URL (e.g. "http://www.google.com"). A resource can be in as many threads you you'd like.</p>
-
-            <h4>Adding a Resource to a Thread</h4>
-            <p>To add the current URL to the current thread, just click the <b><i class="fa fa-star"></i> Add to Thread</b> button. If the resource is already in your knowledge network, just grab the <i class="fa fa-dot-circle-o"></i> and drag 'n' drop it onto the name of the thread that you'd like to add the resource to.</p>
-
-            <h4>Connecting Resources</h4>
-            <p>Resources can be connected together to improve the organization of your knowledge network. To connect two resources, just grab the <i class="fa fa-dot-circle-o"></i> and drag 'n' drop it onto another <i class="fa fa-dot-circle-o"></i> <em>Hint: This is where the magic starts happening</em></p>
-
-            <h4>Importing Thread(s) from File</h4>
-            <p>Congratulations, someone has given you a thread to import! Just press the <i class="fa fa-cloud-download"></i> button and select the file. <em>Hint: The file type is .json</em>.</p>
-
-            <h4>Importing Resources from your Chrome Bookmarks</h4>
-            <p>This is the <b>easiest</b> way to get started. Just press the <i class="fa fa-download"></i> button. <em>Hint: This may take up to 30 seconds if you have a lot of bookmarks.</em></p>
-
-            <h4>Export Thread to File</h4>
-            <p>Sweet, you're ready to share how you've learned something! Just press the <i class="fa fa-cloud-upload"></i> button and choose a file name to save the thread to. Then, you can send it to whomever you like!</p>
-
-            <h4>View Thread in Graph Mode</h4>
-            <p>This tool is in <em>beta</em>, but we've included it just for you. Visualize your thread by pressing the <i class="fa fa-share-alt"></i> button.</p>
-
-            <!-- Exit Button -->
-            <button class="btn btn-sm btn-success"
-                    data-dismiss="modal"
-                    data-target="#newThreadButtonModal">
-              Ok!
-            </button>
-
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Modal element to define and create a new thread -->
+  <div new-thread-modal
+       class="modal fade"
+       id="newThreadButtonModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="newThreadButtonModelLabel">
   </div>
 
-  <!--<hr>-->
+  <!-- Modal element to edit the stitch details -->
+  <div edit-stitch-modal
+       class="modal fade"
+       id="editStitchButtonModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="editStitchButtonModelLabel">
+  </div>
+
+  <!-- Modal element to show help info -->
+  <div help-window-modal
+       class="modal fade"
+       id="helpWindowModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="helpWindowModal">
+  </div>
+
 
   <!-- -------------------------------------- -->
-  <!-- Container for the threads and stitches -->
+  <!-- Container for the top row of buttons   -->
   <!-- -------------------------------------- -->
   <div class="container-fluid" style="padding-bottom:20px;">
 
-    <!-- Banner -->
+    <!-- Banner of buttons -->
     <div class="row" style="width:600px;">
       <div class="col-xs-3 thread-panel-color-bg" style="padding-left:0">
         <div class="button-banner">
@@ -275,6 +193,9 @@ Policy documentation[1] for details and explanation.
 
     </div>
 
+    <!-- -------------------------------------- -->
+    <!-- Container for the threads and stitches -->
+    <!-- -------------------------------------- -->
     <div class="row" style="width:600px;">
 
       <!-- Threads -->
@@ -292,7 +213,7 @@ Policy documentation[1] for details and explanation.
       </div>
 
       <!-- Stitches -->
-      <div class="col-xs-9 row-panel" style="padding-left:0;">
+      <div class="col-xs-9 row-panel" style="padding-left:0;padding-right:20px;">
 
         <!-- List View -->
         <div ng-if="!visualViewFlag" id="stitches">
@@ -301,21 +222,57 @@ Policy documentation[1] for details and explanation.
                  style="background-image: url({{stitch.favIconUrl}}); background-size: 16px;"
                  ng-class="'stitch-' + stitch.___id"
                  ng-repeat="stitch in currentStitches track by $index">
-              <i class="fa fa-dot-circle-o icon-node droptarget"
+              <i class="fa fa-dot-circle-o icon-node icon-stitch-action droptarget"
                  id="stitch-{{stitch.___id}}"
                  draggable="true"
                  drag-effects>
               </i>
+              <label for="editStitchButton">
+                <i class="fa fa-edit icon-pointer icon-stitch-action"
+                   id="stitch-edit-{{stitch.___id}}"
+                   ng-click="setCurrentStitch(stitch.___id)"
+                   tooltip-loader
+                   data-toggle="tooltip"
+                   data-placement="right"
+                   title="Edit Resource Details">
+                </i>
+              </label>
               <a class="a-stitch" ng-click="loadTab(stitch.url)">
                 <span class="stitch-title">{{stitch.title}}</span>
               </a>
-              <a ng-if="currentThread.title!==getMasterThreadTitle()"
-                 ng-click="removeStitch(currentThread.___id, stitch.___id)">
-                <i class="fa fa-trash-o icon-action rightify" style="background-color:white;padding-left:0;"></i>
-              </a>
+              <!-- transient menu only shows up when hovering -->
+              <span class="transient-menu">
+                <!-- button to remove stitch from thread -->
+                <a ng-if="currentThread.title!==getMasterThreadTitle()"
+                   ng-click="removeStitch(currentThread.___id, stitch.___id)">
+                  <i class="fa fa-chain-broken icon-pointer rightify"
+                     data-toggle="tooltip"
+                     data-placement="left"
+                     tooltip-loader
+                     title="Remove from thread."
+                     style="background-color:white;padding-left:0;"></i>
+                </a>
+                <!-- button to delete stitch altogether -->
+                <a ng-if="currentThread.title==getMasterThreadTitle()"
+                   ng-click="deleteStitch(stitch.___id)">
+                  <i class="fa fa-trash-o icon-pointer"
+                     data-toggle="tooltip"
+                     data-placement="left"
+                     tooltip-loader
+                     title="Remove completely."
+                     style="background-color:white;padding-left:0;"></i>
+                </a>
+              </span>
             </div>
           </div>
         </div>
+
+        <button id="editStitchButton"
+                tabindex="2"
+                style="visibility:hidden;position:absolute;"
+                data-toggle="modal"
+                data-target="#editStitchButtonModal">
+        </button>
 
         <!-- Visual View -->
         <div ng-if="visualViewFlag">
@@ -362,6 +319,7 @@ Policy documentation[1] for details and explanation.
 <!--<script src="app/services/graphLayouts.js"></script>-->
 <script src="app/controllers/controllers.js"></script>
 <script src="app/directives/dragEffects.js"></script>
+<script src="app/directives/minorSupport.js"></script>
 
 <script src="js/forcelayouttest.js"></script>
 

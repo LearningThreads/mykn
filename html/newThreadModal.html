@@ -1,0 +1,40 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Start New Learning Thread</h4>
+    </div>
+    <div class="modal-body">
+      <form name="newThread" class="validate" target="_blank" novalidate>
+
+        <!-- A title for the new thread -->
+        <label for="threadName">Name:</label>
+        <input id="threadName"
+               type="text"
+               name="threadName"
+               placeholder="New Thread"
+               ng-model="newThreadTitle"><br>
+
+        <!-- A description for the new thread -->
+        <!--<label for="threadDescription">Description:</label><br>-->
+        <!--<input id="threadDescription"-->
+        <!--type="text"-->
+        <!--name="threadDescription"-->
+        <!--placeholder="Add your description here."-->
+        <!--ng-model="newThreadDescription"><br>-->
+
+        <!-- Add and Cancel buttons -->
+        <div class="spacer-top-sm">
+          <button class="btn btn-sm btn-success"
+                  type="submit"
+                  ng-click="addThread()"
+                  data-dismiss="modal"
+                  data-target="#newThreadButtonModal">Add</button> <!-- @todo How do I parameterize this? -->
+          <button class="btn btn-sm btn-danger"
+                  type="button"
+                  data-dismiss="modal"
+                  data-target="#newThreadButtonModal">Cancel</button> <!-- @todo How do I parameterize this?-->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

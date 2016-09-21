@@ -1,0 +1,33 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Edit Resource Details</h4>
+    </div>
+    <div class="modal-body">
+      <form name="editStitch" class="validate" target="_blank" novalidate>
+
+        <!-- The stitch title -->
+        <label for="stitchTitle">Title:</label>
+        <input id="stitchTitle"
+               class="input-long"
+               type="text"
+               name="stitchTitle"
+               placeholder="Resource Title"
+               ng-model="currentStitch.title"><br>
+
+        <!-- Add and Cancel buttons -->
+        <div class="spacer-top-sm">
+          <button class="btn btn-sm btn-success"
+                  type="button"
+                  ng-click="editStitchDetails()"
+                  data-dismiss="modal"
+                  data-target="#editStitchButtonModal">Save</button>
+          <button class="btn btn-sm btn-danger"
+                  type="button"
+                  data-dismiss="modal"
+                  data-target="#editStitchButtonModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

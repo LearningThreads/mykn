@@ -27,6 +27,7 @@ angular.module('popup')
       $scope.companyName = "Learning Threads Corporation";
       $scope.companyShortName = "Learning Threads";
       $scope.currentThread = undefined;
+      $scope.currentStitch = undefined;
       $scope.currentThreadName = "";
       $scope.currentStitches = [];
       $scope.currentTab = {};
@@ -186,6 +187,37 @@ angular.module('popup')
         // Save the database whenever a stitch is added to the "popup copy"
         // This could probably be implemented a lot differently (i.e. better)
         saveDB();
+      };
+
+      // Delete a stitch completely from the database
+      $scope.deleteStitch = function deleteStitch(stitchId) {
+
+        // @todo: finish implementing this function
+
+        // Get all threads containing this stitch and remove reference to the stitch
+        $scope.db.graphs(function() {
+          var stitches = thisThread.nodes;
+          var index = stitches.indexOf(stitchId);
+          if (index > -1) {
+            stitches.splice(index,1);
+          }
+          this.update({nodes: stitches});
+        });
+
+        // Get all yarns containing this stitch and delete the yarn @todo: need to then also remove yarns from threads, but threads are not currently explicitly keeping track of yarns
+        $scope.db.edges({from:stitchId}).remove();
+        $scope.db.edges({to:stitchId}).remove();
+
+        // Remove the stitch
+        $scope.db.nodes(stitchId).remove();
+
+        // Update and save the database
+        // @todo is there a way to watch for an update and trigger these actions?
+        saveDB();
+        $scope.currentThread = $scope.db.graphs(threadId).first();
+        $scope.currentThreadName = $scope.currentThread.title;
+        $scope.setCurrentStitches();
+
       };
 
       // Remove a stitch from the current thread
@@ -375,6 +407,10 @@ angular.module('popup')
         saveDB();
       };
 
+      $scope.setCurrentStitch = function setCurrentStitch(stitchId) {
+        $scope.currentStitch = $scope.db.nodes(stitchId).first();
+      };
+
       $scope.loadTab = function(url) {
         chrome.tabs.create( {
           url: url
@@ -405,6 +441,10 @@ angular.module('popup')
 
         //var fL = forceLayout;
         //fL(threadId);
+      };
+
+      $scope.editStitchDetails = function editStitchDetails() {
+        saveDB();
       };
 
       // Watch the currentThread value to save it to storage when it changes. This enables us to
