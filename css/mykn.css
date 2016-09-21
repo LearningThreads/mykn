@@ -144,17 +144,18 @@ hr {
   white-space: nowrap;
 }
 
+.stitch-row:hover {
+  background-color: #eeeeee;
+}
+
+
 .thread-row {
   white-space: nowrap;
 }
 
 .stitch-title {
-  padding-right: 20px;
+  /*padding-right: 20px;*/
   text-overflow: clip;
-}
-
-.stitch-row:hover {
-  background-color: #eeeeee;
 }
 
 .icon-node {
@@ -171,24 +172,22 @@ hr {
 .spacer-top-xs {margin-top: 5px;}
 .spacer-top-sm {margin-top: 10px;}
 .spacer-top-md {margin-top: 20px;}
+.spacer-left-sm {margin-left: 10px;}
+.spacer-left-md {margin-left: 20px;}
+.spacer-left-lg {margin-left: 40px;}
 
 .row-panel {
   overflow:scroll;
   height:400px;
 }
 
+/* A transient-menu is hidden unless a defined ancestor is being hovered over */
 .transient-menu {
   visibility: hidden;
 }
-
 .stitch-row:hover .transient-menu {
   visibility: visible;
 }
-
-/*::-webkit-scrollbar {*/
-  /*!*display: none;*!*/
-  /*visibility: hidden;*/
-/*}*/
 
 .button-banner {
   white-space:nowrap;
@@ -227,6 +226,11 @@ hr {
   margin: 5px;
 }
 
+/* this was part of an attempt to not display the scrollbar when not scrolling */
+/*::-webkit-scrollbar {*/
+/*!*display: none;*!*/
+/*visibility: hidden;*/
+/*}*/
 
 /*!* Some basic styling to notify users*/
    /*about the tooltips*!*/

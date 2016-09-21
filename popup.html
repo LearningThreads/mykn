@@ -227,46 +227,48 @@ Policy documentation.
                  draggable="true"
                  drag-effects>
               </i>
-              <label for="editStitchButton">
-                <i class="fa fa-edit icon-pointer icon-stitch-action"
-                   id="stitch-edit-{{stitch.___id}}"
-                   ng-click="setCurrentStitch(stitch.___id)"
-                   tooltip-loader
-                   data-toggle="tooltip"
-                   data-placement="right"
-                   title="Edit Resource Details">
-                </i>
-              </label>
               <a class="a-stitch" ng-click="loadTab(stitch.url)">
                 <span class="stitch-title">{{stitch.title}}</span>
               </a>
               <!-- transient menu only shows up when hovering -->
-              <span class="transient-menu">
+              <span class="transient-menu spacer-left-sm">
+                <!-- label for button to edit stitch -->
+                <label for="editStitchButton">
+                  <i class="fa fa-edit icon-pointer icon-stitch-action"
+                     id="stitch-edit-{{stitch.___id}}"
+                     ng-click="setCurrentStitch(stitch.___id)"
+                     tooltip-loader
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="Edit Resource Details">
+                  </i>
+                </label>
                 <!-- button to remove stitch from thread -->
                 <a ng-if="currentThread.title!==getMasterThreadTitle()"
                    ng-click="removeStitch(currentThread.___id, stitch.___id)">
-                  <i class="fa fa-chain-broken icon-pointer rightify"
+                  <i class="fa fa-chain-broken icon-pointer"
                      data-toggle="tooltip"
-                     data-placement="left"
+                     data-placement="bottom"
                      tooltip-loader
                      title="Remove from thread."
-                     style="background-color:white;padding-left:0;"></i>
+                     style="background-color:white;"></i>
                 </a>
                 <!-- button to delete stitch altogether -->
                 <a ng-if="currentThread.title==getMasterThreadTitle()"
                    ng-click="deleteStitch(stitch.___id)">
                   <i class="fa fa-trash-o icon-pointer"
                      data-toggle="tooltip"
-                     data-placement="left"
+                     data-placement="bottom"
                      tooltip-loader
                      title="Remove completely."
-                     style="background-color:white;padding-left:0;"></i>
+                     style="background-color:white;"></i>
                 </a>
               </span>
             </div>
           </div>
         </div>
 
+        <!-- button referred to by label above -->
         <button id="editStitchButton"
                 tabindex="2"
                 style="visibility:hidden;position:absolute;"
