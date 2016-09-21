@@ -317,7 +317,7 @@ angular.module('popup')
       };
 
       // Add a thread to the database
-      $scope.addThread = function() {
+      $scope.addThread = function addThread() {
 
         var threadTitle = "A New Thread";
         var threadDescription = "The default thread description for a new thread.";
@@ -338,6 +338,7 @@ angular.module('popup')
           title:threadTitle,
           description:threadDescription
         }).first();
+
         $scope.setCurrentStitches();
         saveDB();
       };
@@ -453,6 +454,7 @@ angular.module('popup')
         if ($scope.currentThread !== undefined) {
           chrome.storage.local.set({"currentThreadName": $scope.currentThread.title}, function () {
           });
+          $scope.currentThreadName = $scope.currentThread.title;
         }
       });
 

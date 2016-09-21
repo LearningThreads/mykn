@@ -50,7 +50,7 @@ ul ul {
   background: 0 50% no-repeat;
   box-sizing: border-box;
   overflow: hidden;
-  /*text-overflow: ellipsis;*/
+  text-overflow: ellipsis;
   white-space: pre;
   text-align: left;
 }
@@ -84,7 +84,9 @@ hr {
 }
 
 .a-stitch {
+  max-width: 300px;
   cursor: pointer;
+  /*float: left;*/
 }
 
 .a-thread {
@@ -138,10 +140,14 @@ hr {
 }
 
 .stitch-row {
-  /*padding-top: 5px;*/
-  /*padding-bottom: 5px;*/
+  padding-top: 3px;
+  padding-bottom: 3px;
   margin-left: 5px;
   white-space: nowrap;
+
+  /* This makes the text centered, but it wasn't doing exactly what I wanted*/
+  /*height:25px;*/
+  /*line-height:25px;*/
 }
 
 .stitch-row:hover {
@@ -151,11 +157,6 @@ hr {
 
 .thread-row {
   white-space: nowrap;
-}
-
-.stitch-title {
-  /*padding-right: 20px;*/
-  text-overflow: clip;
 }
 
 .icon-node {
@@ -177,8 +178,12 @@ hr {
 .spacer-left-lg {margin-left: 40px;}
 
 .row-panel {
-  overflow:scroll;
+  overflow-y:scroll;
   height:400px;
+}
+
+.stitch-panel {
+  padding-left:0;
 }
 
 /* A transient-menu is hidden unless a defined ancestor is being hovered over */
@@ -187,6 +192,23 @@ hr {
 }
 .stitch-row:hover .transient-menu {
   visibility: visible;
+}
+
+/* The stitch-menu is supposed to look like a pop-up box next to the title, but not off the screen */
+#stitch-menu {
+  position:absolute;
+  float:right;
+  right:20px;
+  background-color: white;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 3px;
+  border-color: #543156;
+  padding: 0 3px 0 3px;
+}
+
+.tmenu-item {
+  padding: 2px;
 }
 
 .button-banner {
