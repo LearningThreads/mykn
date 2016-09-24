@@ -9,9 +9,11 @@
     "downloads",
     "tabs",
     "storage",
-    "bookmarks",
     "chrome://favicon/",
     "https://www.google-analytics.com/"
+  ],
+  "optional_permissions": [
+    "bookmarks"
   ],
   "icons": {
     "16": "img/logo/16x16.png",

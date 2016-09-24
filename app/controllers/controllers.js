@@ -458,6 +458,21 @@ angular.module('popup')
         }
       });
 
+      $scope.importChromeBookmarks = function importChromeBookmarks() {
+        // Permissions must be requested from inside a user gesture, like a button's
+        // click handler.
+        chrome.permissions.request({
+          permissions: ['bookmarks']
+        }, function(granted) {
+          // The callback argument will be true if the user granted the permissions.
+          if (granted) {
+            $scope.printBookmarks();
+          } else {
+            //doSomethingElse();
+          }
+        });
+      };
+
       // Print out the bookmarks
       // Traverse the bookmark tree, and print the folder and nodes.
       $scope.printBookmarks = function dumpBookmarks() {
@@ -466,7 +481,8 @@ angular.module('popup')
             dumpTreeNodes(bookmarkTreeNodes);
             $scope.$apply(function() {
               saveDB();
-            })
+            });
+            chrome.permissions.remove({permissions: ['bookmarks']});
           });
       };
 
