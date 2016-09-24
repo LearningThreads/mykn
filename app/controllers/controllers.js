@@ -81,7 +81,12 @@ angular.module('popup')
 
       // Save the database, which is maintained purely client-side
       var saveDB = function saveDB() {
-        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {});
+        chrome.storage.local.set({"ltdb":prepSave_ltdb($scope.db)}, function() {
+          // @todo: if this works, the duplicate code can be removed elsewhere
+          $scope.$apply(function() {
+            $scope.setCurrentStitches();
+          });
+        });
       };
 
       var verifyFavIconUrl = function verifyFavIconUrl(favIconUrl) {
@@ -192,19 +197,21 @@ angular.module('popup')
       // Delete a stitch completely from the database
       $scope.deleteStitch = function deleteStitch(stitchId) {
 
-        // @todo: finish implementing this function
-
         // Get all threads containing this stitch and remove reference to the stitch
         $scope.db.graphs(function() {
-          var stitches = thisThread.nodes;
+          var stitches = this.nodes;  // @todo figure out if this is an invalid use of "this"
           var index = stitches.indexOf(stitchId);
-          if (index > -1) {
-            stitches.splice(index,1);
-          }
-          this.update({nodes: stitches});
+          return index > -1;
+        }).update(function() {
+          var stitches = this.nodes;
+          var index = stitches.indexOf(stitchId);
+          stitches.splice(index,1);
+          this.nodes = stitches;
+          return this;
         });
 
-        // Get all yarns containing this stitch and delete the yarn @todo: need to then also remove yarns from threads, but threads are not currently explicitly keeping track of yarns
+        // Get all yarns containing this stitch and delete the yarn
+        // @todo: need to then also remove yarns from threads, but threads are not currently explicitly keeping track of yarns
         $scope.db.edges({from:stitchId}).remove();
         $scope.db.edges({to:stitchId}).remove();
 
@@ -212,11 +219,10 @@ angular.module('popup')
         $scope.db.nodes(stitchId).remove();
 
         // Update and save the database
-        // @todo is there a way to watch for an update and trigger these actions?
         saveDB();
-        $scope.currentThread = $scope.db.graphs(threadId).first();
-        $scope.currentThreadName = $scope.currentThread.title;
-        $scope.setCurrentStitches();
+        //$scope.currentThread = $scope.db.graphs(threadId).first();
+        //$scope.currentThreadName = $scope.currentThread.title;
+        //$scope.setCurrentStitches();
 
       };
 
