@@ -232,6 +232,9 @@ window.learning_threads = (function () {
       // Save original ___id for the edge
       origIds.push(data[o].___id);
 
+      data[o].from = applyIdMapping([data[o].from], nodes.map)[0];
+      data[o].to = applyIdMapping([data[o].to], nodes.map)[0];
+
       // Check for duplicate before inserting
       var dup = collection({
           from:data[o].from,
@@ -242,8 +245,6 @@ window.learning_threads = (function () {
         }).first();
 
       if (!dup) {
-        data[o].from = applyIdMapping([data[o].from], nodes.map)[0];
-        data[o].to = applyIdMapping([data[o].to], nodes.map)[0];
         newIds.push(collection.insert(data[o]).first().___id);
       } else {
         newIds.push(dup.___id);
@@ -352,6 +353,9 @@ window.learning_threads = (function () {
   // Add data to an existing database
   function addData(db, data) {
 
+    console.log(db);
+    console.log(data);
+
     var nodes = addNodes(db.nodes, data.nodes);
     var edges = addEdges(db.edges, data.edges, nodes);
     if (typeof data.graphs === 'string') {
@@ -394,11 +398,18 @@ window.learning_threads = (function () {
 
     var graphData = db.graphs(graphId).first();
     var nodeData = db.nodes(graphData.nodes).get();
-    //var edgeData = db.nodes(graphData.edges).get();
 
     // Ok, so right now we're not saving the edges per graph, but
     // we still need a way to export the right edges.
-    var edgeIDs = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
+    // var edgeData = db.nodes(graphData.edges).get();
+    var edgeIDs = [];
+    console.log(graphId);
+    if (graphId) {
+      edgeIDs = getInclusiveEdges(db, graphData.nodes);
+      console.log(edgeIDs);
+    } else {
+      edgeIDs = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
+    }
     var edgeData = db.edges(edgeIDs).get();
 
     return {
