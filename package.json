@@ -23,30 +23,6 @@
     {
       "name": "Trevor Gile",
       "email": "trevor@learningthreads.co"
-    },
-    {
-      "name": "Pranay Sangani"
-    },
-    {
-      "name": "Nathan Trujillo"
-    },
-    {
-      "name": "Philip Bremer"
-    },
-    {
-      "name": "Nitin Pasumarthy"
-    },
-    {
-      "name": "D.J. Brinkerhoff"
-    },
-    {
-      "name": "Matthew Gee"
-    },
-    {
-      "name": "William Chen"
-    },
-    {
-      "name": "Victor Wu"
     }
   ],
   "license": "MIT",
@@ -73,6 +49,9 @@
     "jquery":"2.2.3",
     "taffydb":"2.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai":"3.5.0",
+    "mocha": "3.1.2"
+  },
   "previousDependencies": {}
 }

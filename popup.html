@@ -72,6 +72,15 @@ Policy documentation.
        aria-labelledby="helpWindowModal">
   </div>
 
+  <!-- Modal element to show import public learning thread -->
+  <div import-public-learning-thread-modal
+       class="modal fade"
+       id="importPublicLTModal"
+       tabindex="-1"
+       role="dialog"
+       aria-labelledby="importPublicLTModal">
+  </div>
+
 
   <!-- -------------------------------------- -->
   <!-- Container for the top row of buttons   -->
@@ -111,13 +120,30 @@ Policy documentation.
           </label>
           <input id="fileForImport" style="visibility:hidden;position:absolute;" type="file" accept=".json">
 
-          <!-- Button to import from Chrome bookmarks -->
-          <a data-toggle="tooltip"
-             data-placement="bottom"
-             title="Import Chrome bookmarks."
-             ng-click="importChromeBookmarks()">
-            <i class="fa fa-download icon-action brand banner-stitches-color-bg"></i>
-          </a>
+          <!--&lt;!&ndash; Button to import from Chrome bookmarks &ndash;&gt;-->
+          <!--<a data-toggle="tooltip"-->
+             <!--data-placement="bottom"-->
+             <!--title="Import Chrome bookmarks."-->
+             <!--ng-click="importChromeBookmarks()">-->
+            <!--<i class="fa fa-download icon-action brand banner-stitches-color-bg"></i>-->
+          <!--</a>-->
+
+          <!-- Button to modal window to import a named public thread -->
+          <label for="importPublicLT">
+            <i class="fa fa-download icon-action brand banner-stitches-color-bg"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Import Public Learning Thread."
+               style="margin-left:5px;">
+            </i>
+          </label>
+          <button id="importPublicLT"
+                  tabindex="3"
+                  style="visibility:hidden;position:absolute"
+                  ng-click="getPublicLearningThreadList()"
+                  data-toggle="modal"
+                  data-target="#importPublicLTModal">
+          </button>
 
           <!-- Button to show modal help -->
           <label for="helpWindow">
@@ -303,6 +329,7 @@ Policy documentation.
 <script src="lib/d3/d3.min.js" charset="utf-8"></script>
 <script src="lib/bootstrap/bootstrap.min.js"></script>
 <script src="lib/angular/angular.min.js"></script>
+<!--<script src="lib/angular-resource/angular-resource.js"></script>-->
 <script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
 <script src="lib/google-analytics/google-analytics-bundle.js"></script>
 <script src="js/popup.js"></script>
@@ -311,7 +338,7 @@ Policy documentation.
 <script src="js/learning_threads.js"></script>
 
 <!-- Library to help import and organize bookmarks -->
-<script src="js/bookmark_lib.js"></script>
+<!--<script src="js/bookmark_lib.js"></script>-->
 
 <!-- The front-end angular application -->
 <script src="app/app.js"></script>

@@ -96,7 +96,7 @@ gulp.task('scripts', function() {
 
     // Minify
     //.pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest(dest + '/js'))
 
     // Notification
@@ -148,6 +148,7 @@ gulp.task('images', function() {
 gulp.task('library', function() {
   return gulp.src([
       src+'/lib/*/angular.min.js',   // @todo: Change these to pull from node_modules
+      src+'/lib/*/angular-resource.js',
       src+'/lib/*/angular-csp.css',
       src+'/lib/*/d3.min.js',
       src+'/lib/*/README.md',

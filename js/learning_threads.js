@@ -50,7 +50,7 @@ window.learning_threads = (function () {
   function applyIdMapping(ids, map) {
     for (var s=0; s<ids.length; s++) {
       var newId = map.newIds[map.origIds.indexOf(ids[s])];
-      if (newId === undefined) throw new Error('Your database has been corrupted. Could not find id ' + ids[s]);
+      if (newId === undefined) throw new Error('Your database has been corrupted. Could not find id ' + ids[s] + ' in ' + JSON.stringify(map.origIds));
       ids[s] = newId;
     }
     return ids;
@@ -169,7 +169,10 @@ window.learning_threads = (function () {
   // to nodes and edges.
   function createGraphCollection(graphsData, nodes, edges) {
 
-    //var graphs = createCollectionAndIdMap(graphsData, 'threads', graphTemplate);
+    if (typeof graphsData !== 'string') {
+      throw new Error('graphsData must be a string, it was a ' + typeof graphsData);
+    }
+
     // Create this collection with TAFFY
     var graphs = TAFFY();
     graphs.collection_name = "threads";
@@ -212,7 +215,7 @@ window.learning_threads = (function () {
 
     var graph_id_map = {};
     var new_graphs = graphs().get();
-    for (i=0; i<graphsData.length; i++) {
+    for (var i=0; i<graphsData.length; i++) {
       graph_id_map[graphsData[i].___id] = new_graphs.___id;
     }
 
@@ -325,6 +328,11 @@ window.learning_threads = (function () {
     };
   }
 
+  /**
+   * prepSave_ltdb builds a json object by collecting all of the
+   * information from the TAFFY database
+   * @returns {Function}
+   */
   function prepSave_ltdb() {
 
     var getNodeData = function getNodeData(nodes) {
@@ -336,7 +344,6 @@ window.learning_threads = (function () {
     };
 
     var getGraphData = function getGraphData(graphs) {
-      //gs = graphs({title:{'!is':'Master Thread'}}).get();
       // Remove the master graph from the array that gets stored.
       return JSON.stringify(graphs({'title': {'!is': masterTitle}}).get());
     };
@@ -352,10 +359,6 @@ window.learning_threads = (function () {
 
   // Add data to an existing database
   function addData(db, data) {
-
-    console.log(db);
-    console.log(data);
-
     var nodes = addNodes(db.nodes, data.nodes);
     var edges = addEdges(db.edges, data.edges, nodes);
     if (typeof data.graphs === 'string') {
@@ -403,10 +406,8 @@ window.learning_threads = (function () {
     // we still need a way to export the right edges.
     // var edgeData = db.nodes(graphData.edges).get();
     var edgeIDs = [];
-    console.log(graphId);
     if (graphId) {
       edgeIDs = getInclusiveEdges(db, graphData.nodes);
-      console.log(edgeIDs);
     } else {
       edgeIDs = getInclusiveEdges(db, db.graphs({title:masterTitle}).first().nodes);
     }
@@ -423,11 +424,11 @@ window.learning_threads = (function () {
 
   // Learning Threads library
   return  {
+    masterTitle:masterTitle,
     build_ltdb:build_ltdb,
     prepSave_ltdb:prepSave_ltdb,
     addData:addData,
     prepGraphForExport:prepGraphForExport,
-    masterTitle:masterTitle,
     getInclusiveEdges:getInclusiveEdges
   };
 

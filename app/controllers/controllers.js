@@ -1,11 +1,13 @@
 angular.module('popup')
   .controller('MainController', [
     '$scope',
+    '$http',
+    '$window',
     'build_ltdb',
     'prepSave_ltdb',
     'prepGraphForExport',
     'forceLayout',
-    function($scope,build_ltdb,prepSave_ltdb,prepGraphForExport,forceLayout) {
+    function($scope,$http,$window,build_ltdb,prepSave_ltdb,prepGraphForExport,forceLayout) {
 
       // Local variables
       var masterThreadName = "Master Thread";
@@ -275,7 +277,6 @@ angular.module('popup')
       };
 
 
-
       // Export a thread to file
       $scope.exportGraph = function exportGraph(threadId) {
         var data = prepGraphForExport($scope.db, threadId);
@@ -476,6 +477,42 @@ angular.module('popup')
           } else {
             //doSomethingElse();
           }
+        });
+      };
+
+      $scope.importPublicLearningThread = function importPublicLearningThread() {
+        var url = 'https://mykn-public-lts.herokuapp.com/api/thread/' + encodeURI($scope.threadTitleForImport)
+
+        $http({
+          method: 'GET',
+          url: url
+        }).then(function successCallback(response) {
+          // this callback will be called asynchronously
+          // when the response is available
+          var dataToAdd = response.data.data;
+          dataToAdd.graphs = [dataToAdd.graphs];  // make it an array @todo this could REALLY use some cleanup :-/
+          $window.learning_threads.addData($scope.db, dataToAdd);
+          saveDB();
+        }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+        });
+
+      };
+
+      $scope.getPublicLearningThreadList = function getPublicLearningThreadList() {
+        var url = 'https://mykn-public-lts.herokuapp.com/api/threads/';
+
+        $http({
+          method: 'GET',
+          url: url
+        }).then(function successCallback(response) {
+          // this callback will be called asynchronously
+          // when the response is available
+          $scope.publicLearningThreadList = response.data;
+        }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
         });
       };
 

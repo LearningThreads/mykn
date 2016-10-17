@@ -40,6 +40,15 @@ angular.module('popup')
 
       }
     };
+  })
+  .directive('importPublicLearningThreadModal', function() {
+    return {
+      restrict: 'A',
+      templateUrl: 'html/importPublicLearningThreadModal.html',
+      link: function (scope, element, attrs) {
+
+      }
+    };
   });
   //.directive('transientScrollbar', ['$document', function($document) {
   //  return {

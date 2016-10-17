@@ -10,7 +10,8 @@
     "tabs",
     "storage",
     "chrome://favicon/",
-    "https://www.google-analytics.com/"
+    "https://www.google-analytics.com/",
+    "https://mykn-public-lts.herokuapp.com/#!/api/thread/*"
   ],
   "optional_permissions": [
     "bookmarks"

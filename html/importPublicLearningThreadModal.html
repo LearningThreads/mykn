@@ -1,0 +1,45 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Import a Public Learning Thread</h4>
+    </div>
+    <div class="modal-body">
+      <form name="newThread" class="validate" target="_blank" novalidate>
+
+        <!-- A title for the new thread -->
+        <label for="threadName">Name:</label>
+        <input id="threadName"
+               class="input-long"
+               type="text"
+               name="threadName"
+               placeholder="New Thread"
+               ng-model="threadTitleForImport"><br>
+
+        <!-- Add and Cancel buttons -->
+        <div class="spacer-top-sm">
+          <button class="btn btn-sm btn-success"
+                  type="submit"
+                  ng-click="importPublicLearningThread()"
+                  data-dismiss="modal"
+                  data-target="#importPublicLTModal">Add</button> <!-- @todo How do I parameterize this? -->
+          <button class="btn btn-sm btn-danger"
+                  type="button"
+                  data-dismiss="modal"
+                  data-target="#importPublicLTModal">Cancel</button> <!-- @todo How do I parameterize this?-->
+        </div>
+      </form>
+
+      <h5>Public Threads Available</h5>
+      <ul style="padding-left:30px;">
+        <li data-ng-repeat="thread in publicLearningThreadList">
+          {{thread.title}}
+        </li>
+      </ul>
+
+      <div data-ng-show="!publicLearningThreadList || !publicLearningThreadList.length">
+        <p>No threads found.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
