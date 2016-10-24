@@ -226,33 +226,36 @@ window.learning_threads = (function () {
   }
 
   function addEdges(collection, data, nodes) {
+
     // Get the original IDs for the mapping
     var origIds = [];
     var newIds = [];
 
-    // Loop over edges to be added
-    for (var o=0; o<data.length; o++) {
-      // Save original ___id for the edge
-      origIds.push(data[o].___id);
+    if (data !== undefined) {
+      // Loop over edges to be added
+      for (var o = 0; o < data.length; o++) {
+        // Save original ___id for the edge
+        origIds.push(data[o].___id);
 
-      data[o].from = applyIdMapping([data[o].from], nodes.map)[0];
-      data[o].to = applyIdMapping([data[o].to], nodes.map)[0];
+        data[o].from = applyIdMapping([data[o].from], nodes.map)[0];
+        data[o].to = applyIdMapping([data[o].to], nodes.map)[0];
 
-      // Check for duplicate before inserting
-      var dup = collection({
-          from:data[o].from,
-          to:data[o].to
-        }).first() || collection({
-          from:data[o].to,
-          to:data[o].from
-        }).first();
+        // Check for duplicate before inserting
+        var dup = collection({
+            from: data[o].from,
+            to: data[o].to
+          }).first() || collection({
+            from: data[o].to,
+            to: data[o].from
+          }).first();
 
-      if (!dup) {
-        newIds.push(collection.insert(data[o]).first().___id);
-      } else {
-        newIds.push(dup.___id);
+        if (!dup) {
+          newIds.push(collection.insert(data[o]).first().___id);
+        } else {
+          newIds.push(dup.___id);
+        }
+
       }
-
     }
 
     // Define the map
@@ -273,21 +276,24 @@ window.learning_threads = (function () {
     var origIds = [];
     var newIds = [];
 
-    // Loop over graphs to be added
-    for (var o=0; o<data.length; o++) {
-      // Save original ___id for the graph
-      origIds.push(data[o].___id);
+    if (data !== undefined) {
 
-      // Check for duplicate before inserting
-      var dup = collection({title:data[o].title}).first();
+      // Loop over graphs to be added
+      for (var o = 0; o < data.length; o++) {
+        // Save original ___id for the graph
+        origIds.push(data[o].___id);
 
-      if (!dup) {
-        // Insert data to the collection
-        data[o].nodes = applyIdMapping(data[o].nodes, nodes.map);
-        data[o].edges = applyIdMapping(data[o].edges, edges.map);
-        newIds.push(collection.insert(data[o]).first().___id);
-      } else {
-        newIds.push(dup.___id);
+        // Check for duplicate before inserting
+        var dup = collection({title: data[o].title}).first();
+
+        if (!dup) {
+          // Insert data to the collection
+          data[o].nodes = applyIdMapping(data[o].nodes, nodes.map);
+          data[o].edges = applyIdMapping(data[o].edges, edges.map);
+          newIds.push(collection.insert(data[o]).first().___id);
+        } else {
+          newIds.push(dup.___id);
+        }
       }
     }
 
