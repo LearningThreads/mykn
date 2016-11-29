@@ -1,7 +1,7 @@
 {
   "name": "My Knowledge Network",
   "short_name": "MYKN",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
@@ -10,8 +10,7 @@
     "tabs",
     "storage",
     "chrome://favicon/",
-    "https://www.google-analytics.com/",
-    "https://mykn-public-lts.herokuapp.com/#!/api/thread/*"
+    "http://www.learningthreads.co/*"
   ],
   "optional_permissions": [
     "bookmarks"

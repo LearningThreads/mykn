@@ -96,7 +96,7 @@ gulp.task('scripts', function() {
 
     // Minify
     //.pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(dest + '/js'))
 
     // Notification
