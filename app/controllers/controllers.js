@@ -481,7 +481,7 @@ angular.module('popup')
       };
 
       $scope.importPublicLearningThread = function importPublicLearningThread() {
-        var url = 'https://mykn-public-lts.herokuapp.com/api/thread/' + encodeURI($scope.threadTitleForImport)
+        var url = 'http://www.learningthreads.co/api/public_thread/' + encodeURI($scope.threadTitleForImport);
 
         $http({
           method: 'GET',
@@ -501,7 +501,7 @@ angular.module('popup')
       };
 
       $scope.getPublicLearningThreadList = function getPublicLearningThreadList() {
-        var url = 'https://mykn-public-lts.herokuapp.com/api/threads/';
+        var url = 'http://www.learningthreads.co/api/public_threads';
 
         $http({
           method: 'GET',
