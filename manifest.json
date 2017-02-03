@@ -1,7 +1,7 @@
 {
-  "name": "My Knowledge Network",
-  "short_name": "MYKN",
-  "version": "0.0.9",
+  "name": "Learning Threads",
+  "short_name": "LT",
+  "version": "0.0.10",
   "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
@@ -22,7 +22,7 @@
     "128": "img/logo/128x128.png"
   },
   "browser_action": {
-      "default_title": "MYKN",
+      "default_title": "Learning Threads",
       "default_icon": "img/logo/48x48.png",
       "default_popup": "popup.html"
   },

@@ -1,7 +1,7 @@
 {
-  "name": "MYKN",
-  "version": "0.0.9",
-  "description": "My Knowledge Network",
+  "name": "Learning Threads",
+  "version": "0.0.10",
+  "description": "Learning Threads",
   "homepage": "http://www.learningthreads.co",
   "repository": {
     "type": "git",
@@ -9,7 +9,10 @@
   },
   "keywords": [
     "Knowledge Sharing",
-    "Capture", "Collaborate", "Curate", "Communicate",
+    "Capture",
+    "Collaborate",
+    "Curate",
+    "Communicate",
     "Learning",
     "Teaching",
     "Education"
