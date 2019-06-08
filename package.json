@@ -1,8 +1,8 @@
 {
   "name": "LearningThreads",
-  "version": "0.0.10",
+  "version": "0.0.13",
   "description": "Learning Threads",
-  "homepage": "http://www.learningthreads.co",
+  "homepage": "https://www.facebook.com/learningthreads/",
   "repository": {
     "type": "git",
     "url": "https://github.com/learningthreads/mykn"
@@ -15,29 +15,38 @@
     "Communicate",
     "Learning",
     "Teaching",
-    "Education"
+    "Education",
+    "Training",
+    "Upskill",
+    "Organizational Learning"
   ],
   "author": {
     "name": "Learning Threads Corporation",
-    "email": "contact@learningthreads.co",
-    "url": "http://www.learningthreads.co"
+    "email": "sleuthg@gmail.com",
+    "url": "https://www.facebook.com/learningthreads/"
   },
   "contributors": [
     {
       "name": "Trevor Gile",
-      "email": "trevor@learningthreads.co"
+      "email": "sleuthg@gmail.com"
     }
   ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/learningthreads/mykn/issues",
-    "email": "contact@learningthreads.co"
+    "email": "sleuthg@gmail.com"
   },
   "private": true,
   "dependencies": {
+    "angular": "1.4.8",
     "bootstrap": "3.3.6",
-    "bower": "~1.4.1",
-    "gulp": "^3.8.11",
+    "jquery": "2.2.3",
+    "taffydb": "2.7.2",
+    "d3": "3.5.17"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "gulp": "^3.9.1",
     "gulp-cached": "^1.0.4",
     "gulp-concat": "^2.5.2",
     "gulp-filter": "^2.0.2",
@@ -48,12 +57,6 @@
     "gulp-plumber": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.1.0",
-    "http-server": "^0.6.1",
-    "jquery":"2.2.3",
-    "taffydb":"2.7.2"
-  },
-  "devDependencies": {
-    "chai":"3.5.0",
     "mocha": "3.1.2"
   },
   "previousDependencies": {}

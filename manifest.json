@@ -1,7 +1,7 @@
 {
   "name": "Learning Threads",
   "short_name": "LT",
-  "version": "0.0.10",
+  "version": "0.0.13",
   "description": "Capture. Collaborate. Curate. Communicate.",
   "author":"Learning Threads Corporation",
   "permissions": [
@@ -9,8 +9,7 @@
     "downloads",
     "tabs",
     "storage",
-    "chrome://favicon/",
-    "http://www.learningthreads.co/*"
+    "chrome://favicon/"
   ],
   "optional_permissions": [
     "bookmarks"

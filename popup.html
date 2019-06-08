@@ -21,12 +21,12 @@ Policy documentation.
 
   <!-- Stylesheets -->
   <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="lib/angular/angular-csp.css" media="screen"> <!-- @todo: minify -->
+  <link type="text/css" rel="stylesheet" href="lib/angular-csp.css" media="screen"> <!-- @todo: minify --> <!-- needed for ng-show and ng-hide to work correctly -->
   <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" media="screen">
   <link type="text/css" rel="stylesheet" href="css/mykn.css" media="screen">  <!-- @todo minify -->
   <link type="text/css" rel="stylesheet" href="css/colors.css" media="screen">  <!-- @todo minify -->
 
-  <script src="lib/d3/d3.min.js" charset="utf-8"></script>
+  <script src="lib/d3.min.js" charset="utf-8"></script>
 
 </head>
 
@@ -326,13 +326,13 @@ Policy documentation.
 </div>
 
 <!-- Scripts: placed at end for load optimization-->
-<script src="lib/jquery/jquery-1.10.2.min.js"></script>
-<script src="lib/d3/d3.min.js" charset="utf-8"></script>
-<script src="lib/bootstrap/bootstrap.min.js"></script>
-<script src="lib/angular/angular.min.js"></script>
-<!--<script src="lib/angular-resource/angular-resource.js"></script>-->
-<script src="lib/taffy/taffy.js"></script> <!-- the "database" --> <!-- @todo minify -->
-<!--<script src="lib/google-analytics/google-analytics-bundle.js"></script>-->
+<!-- script src="lib/jquery/jquery-1.10.2.min.js"></script> -->
+<script src="lib/jquery.min.js"></script>
+<script src="lib/d3.min.js" charset="utf-8"></script>
+<script src="lib/bootstrap.min.js"></script>
+<script src="lib/angular.min.js"></script>
+<!-- <script src="lib/taffy/taffy.js"></script> --> <!-- the "database" --> <!-- @todo minify -->
+<script src="lib/taffy-min.js"></script>
 <script src="js/popup.js"></script>
 
 <!-- Learning Threads JS library -->

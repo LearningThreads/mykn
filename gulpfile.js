@@ -147,15 +147,12 @@ gulp.task('images', function() {
 // Library files
 gulp.task('library', function() {
   return gulp.src([
-      src+'/lib/*/angular.min.js',   // @todo: Change these to pull from node_modules
-      src+'/lib/*/angular-resource.js',
-      src+'/lib/*/angular-csp.css',
-      src+'/lib/*/d3.min.js',
-      src+'/lib/*/README.md',
-      src+'/lib/*/bootstrap.min.js',
-      src+'/lib/*/google-analytics-bundle.js',
-      src+'/lib/*/jquery-1.10.2.min.js',
-      src+'/lib/*/taffy.js'
+      src+'/node_modules/angular/angular.min.js',
+      src+'/node_modules/angular/angular-csp.css',
+      src+'/node_modules/bootstrap/dist/js/bootstrap.min.js',
+      src+'/node_modules/d3/d3.min.js',
+      src+'/node_modules/jquery/dist/jquery.min.js',
+      src+'/node_modules/taffydb/taffy-min.js'
     ])
 
     .pipe(cache())
