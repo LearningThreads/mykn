@@ -1,6 +1,6 @@
 {
   "name": "LearningThreads",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Learning Threads",
   "homepage": "https://www.facebook.com/learningthreads/",
   "repository": {
@@ -46,18 +46,20 @@
   },
   "devDependencies": {
     "chai": "3.5.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-cached": "^1.0.4",
-    "gulp-concat": "^2.5.2",
     "gulp-filter": "^2.0.2",
-    "gulp-htmlmin": "^2.0.0",
-    "gulp-imagemin": "^2.2.1",
-    "gulp-jshint": "^1.10.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^6.0.0",
+    "gulp-jshint": "^2.1.0",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.0.0",
-    "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.1.0",
+    "jshint": "^2.10.2",
     "mocha": "3.1.2"
   },
-  "previousDependencies": {}
+  "previousDependencies": {
+    "gulp-concat": "^2.5.2",
+    "gulp-rename": "^1.2.2"
+  }
 }

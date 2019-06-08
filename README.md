@@ -8,6 +8,12 @@ MYKN (pronounced "My Kin") stands for My Knowledge Network. It is a simple tool 
 
     npm install --global gulp-cli  # this installs gulp globally
     npm install                    # this installs dependencies based on package.json
+    choco install yarn             # install yarn (from an admin power shell)
+
+## Some Things for Windows Users
+- Install Chocolatey for package management (https://chocolatey.org/install). Run choco commands from an Admin Power Shell.
+- Install node (for node, npm, and npx)
+- Install yarn for dependency management (https://yarnpkg.com/en/docs/install#windows-stable)
     
 
 ## To do
