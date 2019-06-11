@@ -120,12 +120,12 @@ describe('Learing Threads Library API Tests', function() {
           ])
         };
       lt.addData(db,dataToAdd);
+      // @todo: doesn't really do any verification. it should
       done()
     });
-    it('should add two graphs', function(done) {
-      assert.equal(0,1);
-      done();
-    });
+    it('should add two graphs')//, function(done) {
+      //done();
+    //});
     it('should not add any fields to the node template', function(done) {
       var db = lt.build_ltdb(dbDataFull);
       var dataToAdd = {
