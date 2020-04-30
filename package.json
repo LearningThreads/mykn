@@ -40,7 +40,7 @@
   "dependencies": {
     "angular": "1.4.8",
     "bootstrap": "3.3.6",
-    "jquery": "2.2.3",
+    "jquery": "3.5.0",
     "taffydb": "2.7.2",
     "d3": "3.5.17"
   },
