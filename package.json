@@ -38,7 +38,7 @@
   },
   "private": true,
   "dependencies": {
-    "angular": "1.4.8",
+    "angular": "1.8.3",
     "bootstrap": "3.3.6",
     "jquery": "2.2.3",
     "taffydb": "2.7.2",
